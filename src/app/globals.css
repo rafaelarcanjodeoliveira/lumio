@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fafaf8;
+  --surface: #ffffff;
+  --border: #e5e3dc;
+  --border-soft: #f1efe8;
+
+  --text-primary: #2c2c2a;
+  --text-secondary: #5f5e5a;
+  --text-muted: #b4b2a9;
+  --text-faint: #888780;
+
+  --brand: #ef9f27;
+  --brand-dark: #412402;
+  --brand-text: #633806;
+  --brand-soft: #fff3dc;
+
+  --income: #27500a;
+  --income-text: #3b6d11;
+  --income-soft: #eaf3de;
+
+  --expense: #791f1f;
+  --expense-soft: #fcebeb;
+
+  --balance: #0c447c;
+  --balance-text: #185fa5;
+  --balance-soft: #e6f1fb;
+
+  --neutral-soft: #f1efe8;
+  --neutral-text: #5f5e5a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-border-soft: var(--border-soft);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-faint: var(--text-faint);
+
+  --color-brand: var(--brand);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-text: var(--brand-text);
+  --color-brand-soft: var(--brand-soft);
+
+  --color-income: var(--income);
+  --color-income-text: var(--income-text);
+  --color-income-soft: var(--income-soft);
+
+  --color-expense: var(--expense);
+  --color-expense-soft: var(--expense-soft);
+
+  --color-balance: var(--balance);
+  --color-balance-text: var(--balance-text);
+  --color-balance-soft: var(--balance-soft);
+
+  --color-neutral-soft: var(--neutral-soft);
+  --color-neutral-text: var(--neutral-text);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-text-primary);
+}

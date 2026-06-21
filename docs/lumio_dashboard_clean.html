@@ -1,0 +1,303 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans,system-ui,sans-serif)}
+.shell{display:flex;min-height:720px;border:0.5px solid #E5E3DC;border-radius:12px;overflow:hidden;background:#fff}
+.sidebar{width:200px;background:#fff;border-right:0.5px solid #E5E3DC;display:flex;flex-direction:column;flex-shrink:0}
+.sb-logo{padding:18px 16px;border-bottom:0.5px solid #E5E3DC;display:flex;align-items:center;gap:9px}
+.logo-mark{width:28px;height:28px;background:#EF9F27;border-radius:7px;display:flex;align-items:center;justify-content:center}
+.logo-mark svg{width:14px;height:14px}
+.logo-text{font-size:15px;font-weight:500;color:#412402;letter-spacing:0.5px}
+.sb-nav{padding:10px 8px;flex:1}
+.nav-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;font-size:13px;color:#888780;margin-bottom:1px;cursor:pointer}
+.nav-item.active{background:#FFF3DC;color:#633806;font-weight:500}
+.nav-item i{font-size:15px}
+.sb-footer{padding:12px 14px;border-top:0.5px solid #E5E3DC}
+.period-label{font-size:11px;color:#B4B2A9;margin-bottom:5px}
+.period-val{font-size:13px;font-weight:500;color:#2C2C2A;display:flex;align-items:center;justify-content:space-between}
+.main{flex:1;background:#FAFAF8;display:flex;flex-direction:column}
+.topbar{background:#fff;border-bottom:0.5px solid #E5E3DC;padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
+.page-title{font-size:14px;font-weight:500;color:#2C2C2A}
+.page-sub{font-size:11px;color:#B4B2A9;margin-top:1px}
+.btn-add{display:flex;align-items:center;gap:5px;padding:6px 13px;background:#EF9F27;color:#412402;border:none;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer}
+.content{padding:16px 20px;flex:1}
+.section-label{font-size:11px;font-weight:500;color:#B4B2A9;letter-spacing:0.5px;margin-bottom:10px}
+.cards-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:16px}
+.mcard{background:#fff;border:0.5px solid #E5E3DC;border-radius:10px;padding:12px 14px}
+.mcard.highlight{border-color:#EF9F27;border-width:1px}
+.mc-label{font-size:11px;color:#B4B2A9;margin-bottom:8px;display:flex;align-items:center;gap:4px}
+.mc-label i{font-size:13px}
+.mc-value{font-size:20px;font-weight:500;color:#2C2C2A;margin-bottom:6px}
+.mc-value.green{color:#27500A}
+.mc-value.red{color:#791F1F}
+.mc-value.amber{color:#633806}
+.mc-value.blue{color:#0C447C}
+.pill{display:inline-flex;align-items:center;font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px}
+.pill-green{background:#EAF3DE;color:#3B6D11}
+.pill-red{background:#FCEBEB;color:#791F1F}
+.pill-amber{background:#FFF3DC;color:#633806}
+.pill-blue{background:#E6F1FB;color:#185FA5}
+.pill-gray{background:#F1EFE8;color:#5F5E5A}
+.two-col{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:8px;margin-bottom:16px}
+.card{background:#fff;border:0.5px solid #E5E3DC;border-radius:10px;padding:14px}
+.card-head{font-size:12px;font-weight:500;color:#2C2C2A;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.card-head span{font-size:11px;font-weight:400;color:#B4B2A9}
+.bar-row{margin-bottom:9px}
+.bar-meta{display:flex;justify-content:space-between;font-size:12px;color:#5F5E5A;margin-bottom:4px}
+.bar-meta b{font-weight:500;color:#791F1F}
+.track{height:6px;background:#F1EFE8;border-radius:99px;overflow:hidden}
+.fill{height:100%;border-radius:99px}
+.tx-list{display:flex;flex-direction:column}
+.tx{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid #F1EFE8}
+.tx:last-child{border-bottom:none}
+.tx-l{display:flex;align-items:center;gap:9px}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.tx-name{font-size:12px;color:#2C2C2A}
+.tx-cat{font-size:10px;color:#B4B2A9;margin-top:1px}
+.tx-r{text-align:right}
+.tx-val{font-size:12px;font-weight:500}
+.tx-date{font-size:10px;color:#B4B2A9;margin-top:1px}
+.two-col2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.chart-bars{display:flex;align-items:flex-end;gap:3px;height:56px;margin:10px 0 8px}
+.cb{flex:1;border-radius:3px 3px 0 0;min-width:5px}
+.legend{display:flex;gap:12px}
+.leg-item{display:flex;align-items:center;gap:4px;font-size:10px;color:#888780}
+.leg-dot{width:8px;height:8px;border-radius:2px}
+.venc-list{display:flex;flex-direction:column}
+.venc{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid #F1EFE8}
+.venc:last-child{border-bottom:none}
+.venc-name{font-size:12px;color:#2C2C2A}
+.venc-date{font-size:10px;color:#B4B2A9;margin-top:1px}
+.venc-val{font-size:12px;font-weight:500;text-align:right}
+.venc-val.out{color:#791F1F}
+.venc-val.inc{color:#27500A}
+</style>
+
+<h2 class="sr-only">Dashboard do Lumio — visão financeira de junho 2026</h2>
+
+<div class="shell">
+
+  <div class="sidebar">
+    <div class="sb-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="1.5" width="3" height="10" rx="1" fill="#412402"/>
+          <rect x="3" y="9" width="8" height="3" rx="1" fill="#412402"/>
+          <line x1="7" y1="0" x2="7" y2="1.5" stroke="#412402" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="11" y1="1" x2="10" y2="2.2" stroke="#412402" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="12.5" y1="4.5" x2="11" y2="4.5" stroke="#412402" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="logo-text">Lumio</span>
+    </div>
+
+    <nav class="sb-nav">
+      <div class="nav-item active"><i class="ti ti-layout-dashboard" aria-hidden="true"></i>Dashboard</div>
+      <div class="nav-item"><i class="ti ti-list" aria-hidden="true"></i>Lançamentos</div>
+      <div class="nav-item"><i class="ti ti-calendar" aria-hidden="true"></i>Calendário</div>
+      <div class="nav-item"><i class="ti ti-tag" aria-hidden="true"></i>Categorias</div>
+      <div class="nav-item"><i class="ti ti-wallet" aria-hidden="true"></i>Contas</div>
+      <div class="nav-item"><i class="ti ti-chart-bar" aria-hidden="true"></i>Relatórios</div>
+      <div class="nav-item"><i class="ti ti-settings" aria-hidden="true"></i>Configurações</div>
+    </nav>
+
+    <div class="sb-footer">
+      <div class="period-label">Período ativo</div>
+      <div class="period-val">Junho 2026 <i class="ti ti-chevron-down" style="font-size:13px;color:#B4B2A9" aria-hidden="true"></i></div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Dashboard</div>
+        <div class="page-sub">Clareza para seu mês financeiro</div>
+      </div>
+      <button class="btn-add"><i class="ti ti-plus" aria-hidden="true"></i>Novo lançamento</button>
+    </div>
+
+    <div class="content">
+
+      <div class="section-label">Resumo do mês</div>
+
+      <div class="cards-row">
+        <div class="mcard">
+          <div class="mc-label"><i class="ti ti-trending-up" aria-hidden="true"></i>Entradas</div>
+          <div class="mc-value green">R$ 15.000</div>
+          <span class="pill pill-green">+ R$ 5.000 previsto</span>
+        </div>
+        <div class="mcard">
+          <div class="mc-label"><i class="ti ti-trending-down" aria-hidden="true"></i>Saídas</div>
+          <div class="mc-value red">R$ 8.000</div>
+          <span class="pill pill-red">+ R$ 4.000 previsto</span>
+        </div>
+        <div class="mcard">
+          <div class="mc-label"><i class="ti ti-clock" aria-hidden="true"></i>Provisionado</div>
+          <div class="mc-value amber">R$ 1.000</div>
+          <span class="pill pill-amber">líquido a realizar</span>
+        </div>
+        <div class="mcard highlight">
+          <div class="mc-label"><i class="ti ti-circle-check" aria-hidden="true"></i>Saldo atual</div>
+          <div class="mc-value blue">R$ 7.000</div>
+          <span class="pill pill-blue">realizado</span>
+        </div>
+        <div class="mcard">
+          <div class="mc-label"><i class="ti ti-calendar-stats" aria-hidden="true"></i>Saldo previsto</div>
+          <div class="mc-value">R$ 8.000</div>
+          <span class="pill pill-gray">até fim do mês</span>
+        </div>
+        <div class="mcard">
+          <div class="mc-label"><i class="ti ti-coins" aria-hidden="true"></i>Disponível hoje</div>
+          <div class="mc-value">R$ 6.200</div>
+          <span class="pill pill-gray">após venc. hoje</span>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-head">Gastos por categoria <span>junho 2026</span></div>
+          <div class="bar-row">
+            <div class="bar-meta"><span>Moradia</span><b>R$ 2.800</b></div>
+            <div class="track"><div class="fill" style="width:70%;background:#D85A30"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-meta"><span>Alimentação</span><b>R$ 1.400</b></div>
+            <div class="track"><div class="fill" style="width:35%;background:#F0997B"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-meta"><span>Transporte</span><b>R$ 900</b></div>
+            <div class="track"><div class="fill" style="width:23%;background:#EF9F27"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-meta"><span>Assinaturas</span><b>R$ 620</b></div>
+            <div class="track"><div class="fill" style="width:16%;background:#85B7EB"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-meta"><span>Saúde</span><b>R$ 480</b></div>
+            <div class="track"><div class="fill" style="width:12%;background:#5DCAA5"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-meta"><span>Outros</span><b>R$ 800</b></div>
+            <div class="track"><div class="fill" style="width:20%;background:#D3D1C7"></div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">Últimos lançamentos</div>
+          <div class="tx-list">
+            <div class="tx">
+              <div class="tx-l">
+                <div class="dot" style="background:#3B6D11"></div>
+                <div><div class="tx-name">Salário</div><div class="tx-cat">Receita · PJ</div></div>
+              </div>
+              <div class="tx-r">
+                <div class="tx-val" style="color:#27500A">+ R$ 12.000</div>
+                <div class="tx-date">01/06</div>
+              </div>
+            </div>
+            <div class="tx">
+              <div class="tx-l">
+                <div class="dot" style="background:#D85A30"></div>
+                <div><div class="tx-name">Aluguel</div><div class="tx-cat">Moradia</div></div>
+              </div>
+              <div class="tx-r">
+                <div class="tx-val" style="color:#791F1F">− R$ 2.800</div>
+                <div class="tx-date">05/06</div>
+              </div>
+            </div>
+            <div class="tx">
+              <div class="tx-l">
+                <div class="dot" style="background:#EF9F27"></div>
+                <div><div class="tx-name">Cartão Nubank</div><div class="tx-cat">Provisionado</div></div>
+              </div>
+              <div class="tx-r">
+                <div class="tx-val" style="color:#633806">− R$ 1.650</div>
+                <div class="tx-date">vence 22/06</div>
+              </div>
+            </div>
+            <div class="tx">
+              <div class="tx-l">
+                <div class="dot" style="background:#3B6D11"></div>
+                <div><div class="tx-name">Freelance Quod</div><div class="tx-cat">Receita · Pix</div></div>
+              </div>
+              <div class="tx-r">
+                <div class="tx-val" style="color:#27500A">+ R$ 3.000</div>
+                <div class="tx-date">10/06</div>
+              </div>
+            </div>
+            <div class="tx">
+              <div class="tx-l">
+                <div class="dot" style="background:#D85A30"></div>
+                <div><div class="tx-name">Mercado</div><div class="tx-cat">Alimentação</div></div>
+              </div>
+              <div class="tx-r">
+                <div class="tx-val" style="color:#791F1F">− R$ 380</div>
+                <div class="tx-date">14/06</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col2">
+        <div class="card">
+          <div class="card-head">Evolução diária <span>saldo acumulado</span></div>
+          <div class="chart-bars">
+            <div class="cb" style="height:28%;background:#C0DD97"></div>
+            <div class="cb" style="height:38%;background:#C0DD97"></div>
+            <div class="cb" style="height:25%;background:#F7C1C1"></div>
+            <div class="cb" style="height:52%;background:#C0DD97"></div>
+            <div class="cb" style="height:45%;background:#C0DD97"></div>
+            <div class="cb" style="height:32%;background:#F7C1C1"></div>
+            <div class="cb" style="height:60%;background:#C0DD97"></div>
+            <div class="cb" style="height:70%;background:#C0DD97"></div>
+            <div class="cb" style="height:64%;background:#C0DD97"></div>
+            <div class="cb" style="height:78%;background:#C0DD97"></div>
+            <div class="cb" style="height:72%;background:#F7C1C1"></div>
+            <div class="cb" style="height:88%;background:#C0DD97"></div>
+            <div class="cb" style="height:80%;background:#C0DD97"></div>
+            <div class="cb" style="height:93%;background:#C0DD97"></div>
+            <div class="cb" style="height:100%;background:#97C459;outline:1.5px solid #3B6D11;outline-offset:-1px"></div>
+            <div class="cb" style="height:88%;background:#FAEEDA;outline:1px solid #EF9F27;outline-offset:-1px"></div>
+            <div class="cb" style="height:90%;background:#FAEEDA;outline:1px solid #EF9F27;outline-offset:-1px"></div>
+            <div class="cb" style="height:82%;background:#FAEEDA;outline:1px solid #EF9F27;outline-offset:-1px"></div>
+            <div class="cb" style="height:76%;background:#FAEEDA;outline:1px solid #EF9F27;outline-offset:-1px"></div>
+            <div class="cb" style="height:80%;background:#FAEEDA;outline:1px solid #EF9F27;outline-offset:-1px"></div>
+          </div>
+          <div class="legend">
+            <div class="leg-item"><div class="leg-dot" style="background:#97C459"></div>realizado</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#FAEEDA;border:0.5px solid #EF9F27"></div>provisionado</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#F7C1C1"></div>dia negativo</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">Próximos vencimentos</div>
+          <div class="venc-list">
+            <div class="venc">
+              <div><div class="venc-name">Cartão Nubank</div><div class="venc-date">22/06 · 2 dias</div></div>
+              <div><div class="venc-val out">R$ 1.650</div><div style="text-align:right;margin-top:2px"><span class="pill pill-red">urgente</span></div></div>
+            </div>
+            <div class="venc">
+              <div><div class="venc-name">Internet Vivo</div><div class="venc-date">25/06 · 5 dias</div></div>
+              <div><div class="venc-val out">R$ 99</div><div style="text-align:right;margin-top:2px"><span class="pill pill-amber">pendente</span></div></div>
+            </div>
+            <div class="venc">
+              <div><div class="venc-name">Financiamento</div><div class="venc-date">28/06 · 8 dias</div></div>
+              <div><div class="venc-val out">R$ 1.200</div><div style="text-align:right;margin-top:2px"><span class="pill pill-amber">pendente</span></div></div>
+            </div>
+            <div class="venc">
+              <div><div class="venc-name">Condomínio</div><div class="venc-date">30/06 · 10 dias</div></div>
+              <div><div class="venc-val out">R$ 580</div><div style="text-align:right;margin-top:2px"><span class="pill pill-gray">pendente</span></div></div>
+            </div>
+            <div class="venc">
+              <div><div class="venc-name">Freelance Sympla</div><div class="venc-date">30/06 · a receber</div></div>
+              <div><div class="venc-val inc">+ R$ 5.000</div><div style="text-align:right;margin-top:2px"><span class="pill pill-green">previsto</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

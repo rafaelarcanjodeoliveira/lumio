@@ -1,0 +1,349 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.shell{display:flex;min-height:700px;background:var(--color-background-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;border:0.5px solid var(--color-border-tertiary)}
+.sidebar{width:188px;background:var(--color-background-primary);border-right:0.5px solid var(--color-border-tertiary);display:flex;flex-direction:column;padding:0;flex-shrink:0}
+.sb-logo{padding:20px 16px 16px;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;gap:10px}
+.sb-icon{width:30px;height:30px;border-radius:7px;background:#EF9F27;display:flex;align-items:center;justify-content:center}
+.sb-icon svg{width:16px;height:16px}
+.sb-brand{font-size:16px;font-weight:500;color:#412402;font-family:Georgia,serif;letter-spacing:1px}
+.sb-nav{padding:12px 8px;flex:1}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--border-radius-md);cursor:pointer;font-size:13px;color:var(--color-text-secondary);margin-bottom:2px}
+.nav-item.active{background:#FAEEDA;color:#633806;font-weight:500}
+.nav-item i{font-size:16px}
+.sb-month{padding:12px 16px;border-top:0.5px solid var(--color-border-tertiary)}
+.sb-month-label{font-size:11px;color:var(--color-text-tertiary);margin-bottom:6px}
+.sb-month-val{font-size:13px;font-weight:500;color:var(--color-text-primary);display:flex;align-items:center;justify-content:space-between}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{padding:14px 20px;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:space-between;background:var(--color-background-primary)}
+.topbar-title{font-size:15px;font-weight:500;color:var(--color-text-primary)}
+.topbar-sub{font-size:12px;color:var(--color-text-tertiary);margin-top:1px}
+.topbar-actions{display:flex;gap:8px;align-items:center}
+.btn-new{background:#EF9F27;color:#412402;border:none;padding:7px 14px;border-radius:var(--border-radius-md);font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:5px}
+.btn-new i{font-size:14px}
+.content{padding:16px 20px;flex:1;overflow-y:auto}
+.cards-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:16px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px 16px}
+.card-label{font-size:11px;color:var(--color-text-tertiary);margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.card-label i{font-size:13px}
+.card-value{font-size:22px;font-weight:500;color:var(--color-text-primary)}
+.card-sub{font-size:11px;margin-top:5px}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500}
+.badge-green{background:#EAF3DE;color:#3B6D11}
+.badge-red{background:#FCEBEB;color:#A32D2D}
+.badge-amber{background:#FAEEDA;color:#854F0B}
+.badge-blue{background:#E6F1FB;color:#185FA5}
+.row-2{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:10px;margin-bottom:16px}
+.card-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+.bar-group{margin-bottom:10px}
+.bar-label{display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-secondary);margin-bottom:4px}
+.bar-track{height:7px;background:var(--color-background-secondary);border-radius:20px;overflow:hidden}
+.bar-fill{height:100%;border-radius:20px}
+.lancamentos{display:flex;flex-direction:column;gap:1px}
+.lanc-item{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.lanc-item:last-child{border-bottom:none}
+.lanc-left{display:flex;align-items:center;gap:10px}
+.lanc-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.lanc-desc{font-size:13px;color:var(--color-text-primary)}
+.lanc-cat{font-size:11px;color:var(--color-text-tertiary);margin-top:1px}
+.lanc-right{text-align:right}
+.lanc-val{font-size:13px;font-weight:500}
+.lanc-date{font-size:11px;color:var(--color-text-tertiary);margin-top:1px}
+.val-green{color:#3B6D11}
+.val-red{color:#A32D2D}
+.val-amber{color:#854F0B}
+.row-3{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.mini-chart{display:flex;align-items:flex-end;gap:4px;height:52px;margin-top:8px}
+.bar-day{flex:1;border-radius:3px 3px 0 0;min-width:6px}
+.venc-list{display:flex;flex-direction:column;gap:2px;margin-top:4px}
+.venc-item{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.venc-item:last-child{border-bottom:none}
+.venc-name{font-size:12px;color:var(--color-text-primary)}
+.venc-date{font-size:11px;color:var(--color-text-tertiary)}
+.venc-val{font-size:12px;font-weight:500;color:#A32D2D}
+.chip-venc{font-size:10px;padding:1px 6px;border-radius:20px;background:#FCEBEB;color:#A32D2D}
+.chip-ok{font-size:10px;padding:1px 6px;border-radius:20px;background:#EAF3DE;color:#3B6D11}
+</style>
+
+<h2 class="sr-only">Mockup do dashboard do app Lumio — controle financeiro pessoal</h2>
+
+<div class="shell">
+  <div class="sidebar">
+    <div class="sb-logo">
+      <div class="sb-icon">
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="2" width="3" height="11" rx="1" fill="#412402"/>
+          <rect x="4" y="10" width="8" height="3" rx="1" fill="#412402"/>
+          <line x1="8" y1="0.5" x2="8" y2="2" stroke="#412402" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="12" y1="1.5" x2="11" y2="2.5" stroke="#412402" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="13.5" y1="5" x2="12" y2="5" stroke="#412402" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="sb-brand">Lumio</span>
+    </div>
+    <nav class="sb-nav">
+      <div class="nav-item active"><i class="ti ti-layout-dashboard" aria-hidden="true"></i>Dashboard</div>
+      <div class="nav-item"><i class="ti ti-list" aria-hidden="true"></i>Lançamentos</div>
+      <div class="nav-item"><i class="ti ti-calendar" aria-hidden="true"></i>Calendário</div>
+      <div class="nav-item"><i class="ti ti-tag" aria-hidden="true"></i>Categorias</div>
+      <div class="nav-item"><i class="ti ti-wallet" aria-hidden="true"></i>Contas</div>
+      <div class="nav-item"><i class="ti ti-chart-bar" aria-hidden="true"></i>Relatórios</div>
+      <div class="nav-item"><i class="ti ti-settings" aria-hidden="true"></i>Configurações</div>
+    </nav>
+    <div class="sb-month">
+      <div class="sb-month-label">Período ativo</div>
+      <div class="sb-month-val">
+        <span>Junho 2026</span>
+        <i class="ti ti-chevron-down" style="font-size:14px;color:var(--color-text-tertiary)" aria-hidden="true"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title">Dashboard</div>
+        <div class="topbar-sub">Clareza para seu mês financeiro</div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn-new"><i class="ti ti-plus" aria-hidden="true"></i>Novo lançamento</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-label"><i class="ti ti-trending-up" aria-hidden="true"></i>Entradas realizadas</div>
+          <div class="card-value" style="color:#27500A">R$ 15.000</div>
+          <div class="card-sub"><span class="badge badge-green">+ R$ 5.000 previsto</span></div>
+        </div>
+        <div class="card">
+          <div class="card-label"><i class="ti ti-trending-down" aria-hidden="true"></i>Saídas realizadas</div>
+          <div class="card-value" style="color:#A32D2D">R$ 8.000</div>
+          <div class="card-sub"><span class="badge badge-red">+ R$ 4.000 previsto</span></div>
+        </div>
+        <div class="card">
+          <div class="card-label"><i class="ti ti-clock" aria-hidden="true"></i>Provisionado líquido</div>
+          <div class="card-value" style="color:#854F0B">R$ 1.000</div>
+          <div class="card-sub"><span class="badge badge-amber">a realizar este mês</span></div>
+        </div>
+        <div class="card" style="border-top:2px solid #EF9F27">
+          <div class="card-label"><i class="ti ti-circle-check" aria-hidden="true"></i>Saldo atual</div>
+          <div class="card-value" style="color:#185FA5">R$ 7.000</div>
+          <div class="card-sub"><span class="badge badge-blue">realizado</span></div>
+        </div>
+        <div class="card">
+          <div class="card-label"><i class="ti ti-calendar-stats" aria-hidden="true"></i>Saldo previsto</div>
+          <div class="card-value">R$ 8.000</div>
+          <div class="card-sub" style="font-size:11px;color:var(--color-text-tertiary)">até fim do mês</div>
+        </div>
+        <div class="card">
+          <div class="card-label"><i class="ti ti-coins" aria-hidden="true"></i>Disponível hoje</div>
+          <div class="card-value">R$ 6.200</div>
+          <div class="card-sub" style="font-size:11px;color:var(--color-text-tertiary)">após venc. de hoje</div>
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="card">
+          <div class="card-title">
+            Gastos por categoria
+            <span style="font-size:11px;font-weight:400;color:var(--color-text-tertiary)">junho</span>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label"><span>Moradia</span><span style="font-weight:500;color:#A32D2D">R$ 2.800</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:70%;background:#D85A30"></div></div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label"><span>Alimentação</span><span style="font-weight:500;color:#A32D2D">R$ 1.400</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:35%;background:#F0997B"></div></div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label"><span>Transporte</span><span style="font-weight:500;color:#A32D2D">R$ 900</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:23%;background:#F5C4B3"></div></div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label"><span>Assinaturas</span><span style="font-weight:500;color:#A32D2D">R$ 620</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:16%;background:#FAEEDA;border:0.5px solid #FAC775"></div></div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label"><span>Saúde</span><span style="font-weight:500;color:#A32D2D">R$ 480</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:12%;background:#D3D1C7"></div></div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label"><span>Outros</span><span style="font-weight:500;color:#A32D2D">R$ 800</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:20%;background:#B4B2A9"></div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Últimos lançamentos</div>
+          <div class="lancamentos">
+            <div class="lanc-item">
+              <div class="lanc-left">
+                <div class="lanc-dot" style="background:#27500A"></div>
+                <div>
+                  <div class="lanc-desc">Salário</div>
+                  <div class="lanc-cat">Receita · Conta PJ</div>
+                </div>
+              </div>
+              <div class="lanc-right">
+                <div class="lanc-val val-green">+ R$ 12.000</div>
+                <div class="lanc-date">01/06</div>
+              </div>
+            </div>
+            <div class="lanc-item">
+              <div class="lanc-left">
+                <div class="lanc-dot" style="background:#A32D2D"></div>
+                <div>
+                  <div class="lanc-desc">Aluguel</div>
+                  <div class="lanc-cat">Moradia · Débito</div>
+                </div>
+              </div>
+              <div class="lanc-right">
+                <div class="lanc-val val-red">− R$ 2.800</div>
+                <div class="lanc-date">05/06</div>
+              </div>
+            </div>
+            <div class="lanc-item">
+              <div class="lanc-left">
+                <div class="lanc-dot" style="background:#854F0B"></div>
+                <div>
+                  <div class="lanc-desc">Cartão Nubank</div>
+                  <div class="lanc-cat">Provisionado</div>
+                </div>
+              </div>
+              <div class="lanc-right">
+                <div class="lanc-val val-amber">− R$ 1.650</div>
+                <div class="lanc-date">vence 22/06</div>
+              </div>
+            </div>
+            <div class="lanc-item">
+              <div class="lanc-left">
+                <div class="lanc-dot" style="background:#27500A"></div>
+                <div>
+                  <div class="lanc-desc">Freelance Quod</div>
+                  <div class="lanc-cat">Receita · Pix</div>
+                </div>
+              </div>
+              <div class="lanc-right">
+                <div class="lanc-val val-green">+ R$ 3.000</div>
+                <div class="lanc-date">10/06</div>
+              </div>
+            </div>
+            <div class="lanc-item">
+              <div class="lanc-left">
+                <div class="lanc-dot" style="background:#A32D2D"></div>
+                <div>
+                  <div class="lanc-desc">Mercado</div>
+                  <div class="lanc-cat">Alimentação · Débito</div>
+                </div>
+              </div>
+              <div class="lanc-right">
+                <div class="lanc-val val-red">− R$ 380</div>
+                <div class="lanc-date">14/06</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-3">
+        <div class="card">
+          <div class="card-title">
+            Evolução diária — junho
+            <span style="font-size:11px;font-weight:400;color:var(--color-text-tertiary)">saldo acumulado</span>
+          </div>
+          <div class="mini-chart">
+            <div class="bar-day" style="height:30%;background:#EAF3DE"></div>
+            <div class="bar-day" style="height:40%;background:#EAF3DE"></div>
+            <div class="bar-day" style="height:28%;background:#FCEBEB"></div>
+            <div class="bar-day" style="height:55%;background:#EAF3DE"></div>
+            <div class="bar-day" style="height:48%;background:#EAF3DE"></div>
+            <div class="bar-day" style="height:35%;background:#FCEBEB"></div>
+            <div class="bar-day" style="height:60%;background:#EAF3DE"></div>
+            <div class="bar-day" style="height:72%;background:#EAF3DE"></div>
+            <div class="bar-day" style="height:65%;background:#EAF3DE"></div>
+            <div class="bar-day" style="height:80%;background:#EAF3DE"></div>
+            <div class="bar-day" style="height:75%;background:#FCEBEB"></div>
+            <div class="bar-day" style="height:88%;background:#EAF3DE"></div>
+            <div class="bar-day" style="height:82%;background:#EAF3DE"></div>
+            <div class="bar-day" style="height:90%;background:#EAF3DE"></div>
+            <div class="bar-day" style="height:100%;background:#EAF3DE;border:1.5px solid #3B6D11"></div>
+            <div class="bar-day" style="height:88%;background:#FAEEDA;border:1px solid #FAC775"></div>
+            <div class="bar-day" style="height:92%;background:#FAEEDA;border:1px solid #FAC775"></div>
+            <div class="bar-day" style="height:85%;background:#FAEEDA;border:1px solid #FAC775"></div>
+            <div class="bar-day" style="height:78%;background:#FAEEDA;border:1px solid #FAC775"></div>
+            <div class="bar-day" style="height:82%;background:#FAEEDA;border:1px solid #FAC775"></div>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:10px">
+            <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-tertiary)">
+              <div style="width:10px;height:10px;border-radius:2px;background:#EAF3DE;border:0.5px solid #3B6D11"></div>realizado
+            </div>
+            <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-tertiary)">
+              <div style="width:10px;height:10px;border-radius:2px;background:#FAEEDA;border:0.5px solid #FAC775"></div>provisionado
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Próximos vencimentos</div>
+          <div class="venc-list">
+            <div class="venc-item">
+              <div>
+                <div class="venc-name">Cartão Nubank</div>
+                <div class="venc-date">22/06 · 2 dias</div>
+              </div>
+              <div style="text-align:right">
+                <div class="venc-val">R$ 1.650</div>
+                <div><span class="chip-venc">urgente</span></div>
+              </div>
+            </div>
+            <div class="venc-item">
+              <div>
+                <div class="venc-name">Internet Vivo</div>
+                <div class="venc-date">25/06 · 5 dias</div>
+              </div>
+              <div style="text-align:right">
+                <div class="venc-val">R$ 99</div>
+                <div><span class="chip-venc">pendente</span></div>
+              </div>
+            </div>
+            <div class="venc-item">
+              <div>
+                <div class="venc-name">Financiamento</div>
+                <div class="venc-date">28/06 · 8 dias</div>
+              </div>
+              <div style="text-align:right">
+                <div class="venc-val">R$ 1.200</div>
+                <div><span class="chip-venc">pendente</span></div>
+              </div>
+            </div>
+            <div class="venc-item">
+              <div>
+                <div class="venc-name">Condomínio</div>
+                <div class="venc-date">30/06 · 10 dias</div>
+              </div>
+              <div style="text-align:right">
+                <div class="venc-val">R$ 580</div>
+                <div><span class="chip-venc">pendente</span></div>
+              </div>
+            </div>
+            <div class="venc-item">
+              <div>
+                <div class="venc-name">Freelance Sympla</div>
+                <div class="venc-date">30/06 · a receber</div>
+              </div>
+              <div style="text-align:right">
+                <div class="venc-val" style="color:#27500A">+ R$ 5.000</div>
+                <div><span class="chip-ok">previsto</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
