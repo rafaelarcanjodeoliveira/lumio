@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { format } from "date-fns";
 import type { z } from "zod";
 import { createClient } from "@/lib/supabase/client";
 import {
@@ -57,6 +58,15 @@ export function ContaForm({
     setFormError(null);
     const supabase = createClient();
 
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      setFormError("Sessão expirada. Faça login novamente.");
+      return;
+    }
+
     if (mode === "editar") {
       const { error } = await supabase
         .from("contas")
@@ -69,23 +79,51 @@ export function ContaForm({
         );
         return;
       }
-    } else {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
 
-      if (!user) {
-        setFormError("Sessão expirada. Faça login novamente.");
+      // Normaliza o lançamento de saldo inicial: remove o anterior e recria
+      // com o valor atual, se aplicável — mais simples do que tentar ajustar
+      // o registro existente.
+      await supabase
+        .from("lancamentos")
+        .delete()
+        .eq("conta_id", contaId)
+        .ilike("descricao", "Saldo inicial —%");
+
+      if (values.saldo_inicial > 0) {
+        await supabase.from("lancamentos").insert({
+          user_id: user.id,
+          tipo: "entrada",
+          status: "realizado",
+          descricao: `Saldo inicial — ${values.nome}`,
+          valor: values.saldo_inicial,
+          data: format(new Date(), "yyyy-MM-dd"),
+          conta_id: contaId,
+          categoria_id: null,
+        });
+      }
+    } else {
+      const { data: novaConta, error } = await supabase
+        .from("contas")
+        .insert({ ...values, user_id: user.id })
+        .select("id")
+        .single();
+
+      if (error || !novaConta) {
+        setFormError("Não foi possível salvar a conta. Tente novamente.");
         return;
       }
 
-      const { error } = await supabase
-        .from("contas")
-        .insert({ ...values, user_id: user.id });
-
-      if (error) {
-        setFormError("Não foi possível salvar a conta. Tente novamente.");
-        return;
+      if (values.saldo_inicial > 0) {
+        await supabase.from("lancamentos").insert({
+          user_id: user.id,
+          tipo: "entrada",
+          status: "realizado",
+          descricao: `Saldo inicial — ${values.nome}`,
+          valor: values.saldo_inicial,
+          data: format(new Date(), "yyyy-MM-dd"),
+          conta_id: novaConta.id,
+          categoria_id: null,
+        });
       }
     }
 
