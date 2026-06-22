@@ -41,7 +41,7 @@ export function UltimosLancamentos({ lancamentos }: UltimosLancamentosProps) {
               </div>
               <div className="shrink-0 pl-2 text-right">
                 <p
-                  className={`whitespace-nowrap text-[13px] font-medium ${
+                  className={`whitespace-nowrap text-[14px] font-semibold tracking-tight ${
                     lancamento.tipo === "entrada"
                       ? "text-income"
                       : "text-expense"

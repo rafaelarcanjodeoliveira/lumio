@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+
 type ConfirmDeleteModalProps = {
   totalParcelas: number | null;
   onClose: () => void;
@@ -15,7 +17,7 @@ export function ConfirmDeleteModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div className="w-full max-w-sm rounded-xl border border-border bg-surface p-5 shadow-sm">
+      <div className="w-full max-w-sm rounded-xl border border-border bg-surface p-5 shadow-card">
         <h2 className="mb-1.5 text-sm font-medium text-text-primary">
           Excluir lançamento
         </h2>
@@ -28,37 +30,33 @@ export function ConfirmDeleteModal({
         <div className="flex flex-col gap-2">
           {isParcelado ? (
             <>
-              <button
+              <Button
                 type="button"
+                variant="secondary"
                 onClick={() => onConfirm("este")}
-                className="w-full rounded-lg border border-border px-3 py-2 text-[13px] font-medium text-text-primary hover:bg-neutral-soft"
               >
                 Excluir apenas este
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
+                variant="danger"
                 onClick={() => onConfirm("grupo")}
-                className="w-full rounded-lg bg-expense px-3 py-2 text-[13px] font-medium text-white hover:opacity-90"
               >
                 Excluir todas as parcelas
-              </button>
+              </Button>
             </>
           ) : (
-            <button
+            <Button
               type="button"
+              variant="danger"
               onClick={() => onConfirm("este")}
-              className="w-full rounded-lg bg-expense px-3 py-2 text-[13px] font-medium text-white hover:opacity-90"
             >
               Excluir
-            </button>
+            </Button>
           )}
-          <button
-            type="button"
-            onClick={onClose}
-            className="w-full rounded-lg px-3 py-2 text-[13px] font-medium text-text-muted hover:bg-neutral-soft"
-          >
+          <Button type="button" variant="ghost" onClick={onClose}>
             Cancelar
-          </button>
+          </Button>
         </div>
       </div>
     </div>

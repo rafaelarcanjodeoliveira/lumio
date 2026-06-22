@@ -40,9 +40,9 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="hidden w-[200px] shrink-0 flex-col border-r border-border bg-surface lg:flex">
-      <div className="flex items-center gap-2.5 border-b border-border px-4 py-[18px]">
-        <div className="flex h-7 w-7 items-center justify-center rounded-[7px] bg-brand">
+    <aside className="hidden w-[224px] shrink-0 flex-col border-r border-border bg-surface lg:flex">
+      <div className="flex items-center gap-2.5 border-b border-border px-5 py-5">
+        <div className="flex h-7 w-7 items-center justify-center rounded-[9px] bg-brand">
           <svg viewBox="0 0 14 14" fill="none" className="h-3.5 w-3.5">
             <rect x="3" y="1.5" width="3" height="10" rx="1" fill="#412402" />
             <rect x="3" y="9" width="8" height="3" rx="1" fill="#412402" />
@@ -51,19 +51,19 @@ export function Sidebar() {
             <line x1="12.5" y1="4.5" x2="11" y2="4.5" stroke="#412402" strokeWidth="1.2" strokeLinecap="round" />
           </svg>
         </div>
-        <span className="text-[15px] font-medium tracking-wide text-brand-dark">
+        <span className="text-[15px] font-semibold tracking-wide text-brand-dark">
           Lumio
         </span>
       </div>
 
-      <nav className="flex-1 px-2 py-2.5">
+      <nav className="flex-1 px-3 py-4">
         {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
           const active = pathname === href;
           return (
             <Link
               key={href}
               href={href}
-              className={`mb-px flex items-center gap-2 rounded-lg px-2.5 py-[7px] text-[13px] transition-colors ${
+              className={`mb-1 flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13px] transition-colors ${
                 active
                   ? "bg-brand-soft font-medium text-brand-text"
                   : "text-text-faint hover:bg-neutral-soft"
@@ -76,7 +76,7 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="border-t border-border px-3.5 py-3">
+      <div className="border-t border-border px-4 py-4">
         <div className="mb-1 text-[11px] text-text-muted">Período ativo</div>
         <div className="flex items-center justify-between text-[13px] font-medium text-text-primary">
           Junho 2026
@@ -84,12 +84,12 @@ export function Sidebar() {
         </div>
       </div>
 
-      <div className="border-t border-border px-2 py-2">
+      <div className="border-t border-border px-3 py-3">
         <button
           type="button"
           onClick={handleSignOut}
           disabled={isSigningOut}
-          className="flex w-full items-center gap-2 rounded-lg px-2.5 py-[7px] text-[13px] text-text-faint transition-colors hover:bg-neutral-soft disabled:opacity-60"
+          className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13px] text-text-faint transition-colors hover:bg-neutral-soft disabled:opacity-60"
         >
           <LogOut className="h-[15px] w-[15px]" />
           {isSigningOut ? "Saindo..." : "Sair"}

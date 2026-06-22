@@ -26,14 +26,14 @@ export function TransactionCard({
   actions,
 }: TransactionCardProps) {
   return (
-    <div className="flex flex-col gap-2 border-b border-border-soft px-4 py-3 last:border-b-0 sm:flex-row sm:items-center sm:justify-between">
+    <div className="flex flex-col gap-2.5 border-b border-border-soft px-4 py-3.5 last:border-b-0 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex min-w-0 items-center gap-3">
         <span
-          className="h-2 w-2 shrink-0 rounded-full"
+          className="h-2.5 w-2.5 shrink-0 rounded-full"
           style={{ backgroundColor: categoriaCor ?? "#888780" }}
         />
         <div className="min-w-0">
-          <p className="truncate text-[13px] text-text-primary">
+          <p className="truncate text-[14px] font-medium text-text-primary">
             {descricao}
           </p>
           <p className="truncate text-[11px] text-text-muted">
@@ -46,7 +46,7 @@ export function TransactionCard({
       <div className="flex items-center justify-between gap-3 sm:justify-end">
         <div className="text-left sm:text-right">
           <p
-            className={`whitespace-nowrap text-[13px] font-medium ${
+            className={`whitespace-nowrap text-[15px] font-semibold tracking-tight ${
               tipo === "entrada" ? "text-income" : "text-expense"
             }`}
           >

@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+
 type ConfirmModalProps = {
   title: string;
   description: string;
@@ -17,25 +19,17 @@ export function ConfirmModal({
 }: ConfirmModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div className="w-full max-w-sm rounded-xl border border-border bg-surface p-5 shadow-sm">
+      <div className="w-full max-w-sm rounded-xl border border-border bg-surface p-5 shadow-card">
         <h2 className="mb-1.5 text-sm font-medium text-text-primary">{title}</h2>
         <p className="mb-5 text-[13px] text-text-muted">{description}</p>
 
         <div className="flex flex-col gap-2">
-          <button
-            type="button"
-            onClick={onConfirm}
-            className="w-full rounded-lg bg-expense px-3 py-2 text-[13px] font-medium text-white hover:opacity-90"
-          >
+          <Button type="button" variant="danger" onClick={onConfirm}>
             {confirmLabel}
-          </button>
-          <button
-            type="button"
-            onClick={onClose}
-            className="w-full rounded-lg px-3 py-2 text-[13px] font-medium text-text-muted hover:bg-neutral-soft"
-          >
+          </Button>
+          <Button type="button" variant="ghost" onClick={onClose}>
             Cancelar
-          </button>
+          </Button>
         </div>
       </div>
     </div>

@@ -14,8 +14,9 @@ import {
   Trash2,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { inputClass } from "@/components/ui/form-field";
 import { EmptyState } from "@/components/ui/empty-state";
+import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 import { ConfirmDeleteModal } from "@/components/lancamentos/confirm-delete-modal";
 import { TransactionCard } from "@/components/lancamentos/transaction-card";
 
@@ -182,8 +183,7 @@ export function LancamentosList({
       </div>
 
       <div className="mb-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
-        <select
-          className={inputClass}
+        <Select
           value={filtroTipo}
           onChange={(event) =>
             setFiltroTipo(event.target.value as typeof filtroTipo)
@@ -192,10 +192,9 @@ export function LancamentosList({
           <option value="todos">Todos os tipos</option>
           <option value="entrada">Entrada</option>
           <option value="saida">Saída</option>
-        </select>
+        </Select>
 
-        <select
-          className={inputClass}
+        <Select
           value={filtroStatus}
           onChange={(event) =>
             setFiltroStatus(event.target.value as typeof filtroStatus)
@@ -204,10 +203,9 @@ export function LancamentosList({
           <option value="todos">Todos os status</option>
           <option value="realizado">Realizado</option>
           <option value="provisionado">Provisionado</option>
-        </select>
+        </Select>
 
-        <select
-          className={inputClass}
+        <Select
           value={filtroCategoria}
           onChange={(event) => setFiltroCategoria(event.target.value)}
         >
@@ -217,12 +215,11 @@ export function LancamentosList({
               {categoria.nome}
             </option>
           ))}
-        </select>
+        </Select>
 
-        <input
+        <Input
           type="text"
           placeholder="Buscar por descrição"
-          className={inputClass}
           value={filtroTexto}
           onChange={(event) => setFiltroTexto(event.target.value)}
         />

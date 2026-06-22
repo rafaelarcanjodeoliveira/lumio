@@ -25,7 +25,7 @@ export function GastosPorCategoria({ gastos }: GastosPorCategoriaProps) {
                 <span className="min-w-0 truncate text-text-secondary">
                   {gasto.nome}
                 </span>
-                <span className="shrink-0 whitespace-nowrap font-medium text-text-primary">
+                <span className="shrink-0 whitespace-nowrap font-semibold tracking-tight text-text-primary">
                   {formatCurrency(gasto.valor)}{" "}
                   <span className="text-text-muted">
                     · {gasto.percentual.toFixed(0)}%

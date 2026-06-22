@@ -64,7 +64,7 @@ export function EvolucaoDiariaChart({ pontos }: EvolucaoDiariaChartProps) {
           <Bar
             dataKey="provisionado"
             stackId="dia"
-            fill="var(--color-brand)"
+            fill="var(--color-chart-provisionado)"
             radius={[2, 2, 0, 0]}
           />
         </BarChart>

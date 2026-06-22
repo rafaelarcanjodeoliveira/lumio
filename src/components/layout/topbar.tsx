@@ -24,7 +24,7 @@ export function Topbar({ title, subtitle, actionHref, actionLabel }: TopbarProps
       {actionHref && actionLabel && (
         <Link
           href={actionHref}
-          className="tap-target inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg bg-brand px-3.5 text-xs font-medium text-brand-dark transition-colors hover:bg-brand-hover"
+          className="tap-target inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-brand px-4 text-xs font-medium text-brand-dark transition-colors hover:bg-brand-hover"
         >
           <Plus className="h-3.5 w-3.5 shrink-0" />
           {actionLabel}

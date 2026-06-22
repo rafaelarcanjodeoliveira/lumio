@@ -64,7 +64,7 @@ export function RealizadoProvisionadoTab({
             dataKey="provisionado"
             name="Provisionado"
             stackId="mes"
-            fill="var(--color-brand)"
+            fill="var(--color-chart-provisionado)"
             radius={[2, 2, 0, 0]}
           />
         </BarChart>

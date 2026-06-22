@@ -38,7 +38,7 @@ export function LoginForm() {
 
   return (
     <Card padding="lg">
-      <h1 className="mb-1 text-base font-medium text-text-primary">Entrar</h1>
+      <h1 className="mb-1 text-lg font-semibold tracking-tight text-text-primary">Entrar</h1>
       <p className="mb-5 text-[13px] text-text-muted">
         Acesse seu controle financeiro
       </p>

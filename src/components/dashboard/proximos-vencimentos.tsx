@@ -42,7 +42,7 @@ export function ProximosVencimentos({
               </div>
               <div className="shrink-0 pl-2 text-right">
                 <p
-                  className={`whitespace-nowrap text-[13px] font-medium ${
+                  className={`whitespace-nowrap text-[14px] font-semibold tracking-tight ${
                     vencimento.tipo === "entrada"
                       ? "text-income"
                       : "text-expense"

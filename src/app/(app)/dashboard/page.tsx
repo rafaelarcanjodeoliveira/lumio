@@ -49,15 +49,15 @@ export default async function DashboardPage() {
         actionHref="/lancamentos/novo"
         actionLabel="Novo lançamento"
       />
-      <PageContainer className="space-y-4">
+      <PageContainer className="space-y-5 sm:space-y-6">
         <ResumoCards resumo={resumo} />
 
-        <div className="grid grid-cols-1 gap-3 lg:grid-cols-[1.4fr_1fr]">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1.4fr_1fr]">
           <EvolucaoDiariaChart pontos={evolucaoDiaria} />
           <UltimosLancamentos lancamentos={ultimosLancamentos} />
         </div>
 
-        <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <GastosPorCategoria gastos={gastosPorCategoria} />
           <ProximosVencimentos vencimentos={proximosVencimentos} />
         </div>

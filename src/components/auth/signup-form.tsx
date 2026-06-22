@@ -55,7 +55,7 @@ export function SignupForm() {
 
   return (
     <Card padding="lg">
-      <h1 className="mb-1 text-base font-medium text-text-primary">
+      <h1 className="mb-1 text-lg font-semibold tracking-tight text-text-primary">
         Criar conta
       </h1>
       <p className="mb-5 text-[13px] text-text-muted">

@@ -30,6 +30,10 @@
 
   --neutral-soft: #f1efe8;
   --neutral-text: #5f5e5a;
+
+  /* Tom de dado para "provisionado" em gráficos — deliberadamente mais
+     discreto que --brand, que fica reservado para ações/estados ativos. */
+  --chart-provisionado: #e0b374;
 }
 
 @theme inline {
@@ -63,6 +67,8 @@
   --color-neutral-soft: var(--neutral-soft);
   --color-neutral-text: var(--neutral-text);
 
+  --color-chart-provisionado: var(--chart-provisionado);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
@@ -74,6 +80,12 @@
   /* Sombra suave para cards — tom quente alinhado à paleta, não preto puro. */
   --shadow-card: 0 4px 16px rgba(43, 36, 28, 0.06);
   --shadow-card-hover: 0 6px 20px rgba(43, 36, 28, 0.09);
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 body {
