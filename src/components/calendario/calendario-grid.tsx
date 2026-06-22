@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { addMonths, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { formatCurrency } from "@/lib/format";
+import { formatCompactNumber } from "@/lib/format";
 import {
   montarGradeCalendario,
   type DiaCalendario,
@@ -86,7 +86,7 @@ export function CalendarioGrid({ mes, ano, lancamentos }: CalendarioGridProps) {
                     type="button"
                     disabled={!dia.noMes}
                     onClick={() => setDiaSelecionado(dia)}
-                    className={`flex min-h-[78px] flex-col items-start gap-1 p-1.5 text-left ${
+                    className={`flex min-h-[62px] w-full min-w-0 flex-col items-start gap-0.5 overflow-hidden p-1 text-left sm:min-h-[78px] sm:gap-1 sm:p-1.5 ${
                       isUltimaColuna ? "" : "border-r border-border-soft"
                     } ${isUltimaSemana ? "" : "border-b border-border-soft"} ${
                       dia.noMes ? "hover:bg-neutral-soft" : "bg-background"
@@ -102,19 +102,19 @@ export function CalendarioGrid({ mes, ano, lancamentos }: CalendarioGridProps) {
                       </span>
                       {dia.temProvisionado && (
                         <span
-                          className="h-1.5 w-1.5 rounded-full bg-brand"
+                          className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand"
                           title="Há lançamentos provisionados"
                         />
                       )}
                     </div>
                     {dia.entradas > 0 && (
-                      <span className="text-[10px] font-medium text-income">
-                        + {formatCurrency(dia.entradas)}
+                      <span className="block w-full truncate text-[9px] font-medium text-income sm:text-[10px]">
+                        +{formatCompactNumber(dia.entradas)}
                       </span>
                     )}
                     {dia.saidas > 0 && (
-                      <span className="text-[10px] font-medium text-expense">
-                        − {formatCurrency(dia.saidas)}
+                      <span className="block w-full truncate text-[9px] font-medium text-expense sm:text-[10px]">
+                        −{formatCompactNumber(dia.saidas)}
                       </span>
                     )}
                   </button>

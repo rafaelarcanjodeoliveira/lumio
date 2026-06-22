@@ -1,3 +1,4 @@
+import { Card } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/format";
 import type { GastoPorCategoria } from "@/lib/dashboard/calculations";
 
@@ -7,7 +8,7 @@ type GastosPorCategoriaProps = {
 
 export function GastosPorCategoria({ gastos }: GastosPorCategoriaProps) {
   return (
-    <div className="rounded-xl border border-border bg-surface p-4">
+    <Card>
       <h2 className="mb-3 text-[12px] font-medium text-text-primary">
         Gastos por categoria
       </h2>
@@ -20,9 +21,11 @@ export function GastosPorCategoria({ gastos }: GastosPorCategoriaProps) {
         <div className="flex flex-col gap-2.5">
           {gastos.map((gasto) => (
             <div key={gasto.categoriaId}>
-              <div className="mb-1 flex items-center justify-between text-[12px]">
-                <span className="text-text-secondary">{gasto.nome}</span>
-                <span className="font-medium text-text-primary">
+              <div className="mb-1 flex items-center justify-between gap-2 text-[12px]">
+                <span className="min-w-0 truncate text-text-secondary">
+                  {gasto.nome}
+                </span>
+                <span className="shrink-0 whitespace-nowrap font-medium text-text-primary">
                   {formatCurrency(gasto.valor)}{" "}
                   <span className="text-text-muted">
                     · {gasto.percentual.toFixed(0)}%
@@ -42,6 +45,6 @@ export function GastosPorCategoria({ gastos }: GastosPorCategoriaProps) {
           ))}
         </div>
       )}
-    </div>
+    </Card>
   );
 }

@@ -3,8 +3,8 @@
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { X } from "lucide-react";
-import { formatCurrency } from "@/lib/format";
 import type { DiaCalendario } from "@/lib/calendario/calculations";
+import { TransactionCard } from "@/components/lancamentos/transaction-card";
 
 type DiaPanelProps = {
   dia: DiaCalendario;
@@ -42,41 +42,16 @@ export function DiaPanel({ dia, onClose }: DiaPanelProps) {
           ) : (
             <div className="flex flex-col">
               {dia.lancamentos.map((lancamento) => (
-                <div
+                <TransactionCard
                   key={lancamento.id}
-                  className="flex items-center justify-between border-b border-border-soft py-2.5 last:border-b-0"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <span
-                      className="h-1.5 w-1.5 shrink-0 rounded-full"
-                      style={{
-                        backgroundColor:
-                          lancamento.categorias?.cor ?? "#888780",
-                      }}
-                    />
-                    <div>
-                      <p className="text-[13px] text-text-primary">
-                        {lancamento.descricao}
-                      </p>
-                      <p className="text-[11px] text-text-muted">
-                        {lancamento.categorias?.nome ?? "Sem categoria"} ·{" "}
-                        {lancamento.status === "realizado"
-                          ? "Realizado"
-                          : "Provisionado"}
-                      </p>
-                    </div>
-                  </div>
-                  <p
-                    className={`text-[13px] font-medium ${
-                      lancamento.tipo === "entrada"
-                        ? "text-income"
-                        : "text-expense"
-                    }`}
-                  >
-                    {lancamento.tipo === "entrada" ? "+ " : "− "}
-                    {formatCurrency(lancamento.valor)}
-                  </p>
-                </div>
+                  descricao={lancamento.descricao}
+                  categoriaNome={lancamento.categorias?.nome}
+                  categoriaCor={lancamento.categorias?.cor}
+                  data={lancamento.data}
+                  tipo={lancamento.tipo}
+                  status={lancamento.status}
+                  valor={lancamento.valor}
+                />
               ))}
             </div>
           )}

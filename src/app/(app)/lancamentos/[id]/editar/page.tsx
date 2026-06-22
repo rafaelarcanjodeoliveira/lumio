@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { Topbar } from "@/components/layout/topbar";
+import { PageContainer } from "@/components/ui/page-container";
 import { LancamentoForm } from "@/components/lancamentos/lancamento-form";
 import { createClient } from "@/lib/supabase/server";
 
@@ -38,7 +39,7 @@ export default async function EditarLancamentoPage({
   return (
     <>
       <Topbar title="Editar lançamento" subtitle={lancamento.descricao} />
-      <div className="flex-1 px-5 py-4">
+      <PageContainer>
         <LancamentoForm
           mode="editar"
           lancamentoId={lancamento.id}
@@ -58,7 +59,7 @@ export default async function EditarLancamentoPage({
             observacao: lancamento.observacao ?? "",
           }}
         />
-      </div>
+      </PageContainer>
     </>
   );
 }

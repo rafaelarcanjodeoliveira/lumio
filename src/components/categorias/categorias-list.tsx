@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Tag, Trash2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { ConfirmModal } from "@/components/ui/confirm-modal";
+import { EmptyState } from "@/components/ui/empty-state";
 
 type CategoriaRow = {
   id: string;
@@ -74,35 +75,37 @@ export function CategoriasList({ initialCategorias }: CategoriasListProps) {
         <p className="mb-3 text-[12px] text-expense">{actionError}</p>
       )}
 
-      <div className="rounded-xl border border-border bg-surface">
+      <div className="rounded-xl border border-border bg-surface shadow-card">
         {categorias.length === 0 ? (
-          <p className="px-4 py-6 text-center text-sm text-text-muted">
-            Nenhuma categoria cadastrada.
-          </p>
+          <EmptyState
+            icon={Tag}
+            title="Nenhuma categoria cadastrada"
+            description="Crie categorias para organizar suas entradas e saídas."
+          />
         ) : (
           categorias.map((categoria) => (
             <div
               key={categoria.id}
               className="flex items-center justify-between gap-3 border-b border-border-soft px-4 py-3 last:border-b-0"
             >
-              <div className="flex items-center gap-3">
+              <div className="flex min-w-0 items-center gap-3">
                 <span
                   className="h-2.5 w-2.5 shrink-0 rounded-full"
                   style={{ backgroundColor: categoria.cor }}
                 />
-                <div>
-                  <p className="text-[13px] text-text-primary">
+                <div className="min-w-0">
+                  <p className="truncate text-[13px] text-text-primary">
                     {categoria.nome}
                   </p>
-                  <p className="text-[11px] text-text-muted">
+                  <p className="truncate text-[11px] text-text-muted">
                     {TIPO_LABELS[categoria.tipo]}
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex shrink-0 items-center gap-2">
                 <span
-                  className={`rounded-full px-1.5 py-0.5 text-[10px] font-medium ${
+                  className={`whitespace-nowrap rounded-full px-1.5 py-0.5 text-[10px] font-medium ${
                     categoria.ativo
                       ? "bg-income-soft text-income-text"
                       : "bg-neutral-soft text-text-muted"

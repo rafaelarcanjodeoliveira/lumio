@@ -1,4 +1,5 @@
 import { Topbar } from "@/components/layout/topbar";
+import { PageContainer } from "@/components/ui/page-container";
 import { ContasList } from "@/components/contas/contas-list";
 import { createClient } from "@/lib/supabase/server";
 
@@ -29,9 +30,9 @@ export default async function ContasPage() {
         actionHref="/contas/novo"
         actionLabel="Nova conta"
       />
-      <div className="flex-1 px-5 py-4">
+      <PageContainer>
         <ContasList initialContas={contasComVinculo} />
-      </div>
+      </PageContainer>
     </>
   );
 }

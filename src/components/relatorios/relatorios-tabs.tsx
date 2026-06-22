@@ -37,13 +37,13 @@ export function RelatoriosTabs({
 
   return (
     <div>
-      <div className="mb-4 flex gap-1 border-b border-border">
+      <div className="mb-4 flex gap-1 overflow-x-auto border-b border-border">
         {TABS.map((tab) => (
           <button
             key={tab.id}
             type="button"
             onClick={() => setTabAtiva(tab.id)}
-            className={`px-3 py-2 text-[13px] font-medium transition-colors ${
+            className={`shrink-0 whitespace-nowrap px-3 py-2 text-[13px] font-medium transition-colors ${
               tabAtiva === tab.id
                 ? "border-b-2 border-brand text-text-primary"
                 : "text-text-muted hover:text-text-secondary"

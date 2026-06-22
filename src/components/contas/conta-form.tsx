@@ -12,7 +12,11 @@ import {
   contaSchema,
   type ContaValues,
 } from "@/lib/validations/conta";
-import { FormField, inputClass } from "@/components/ui/form-field";
+import { FormField } from "@/components/ui/form-field";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 
 type ContaFormInput = z.input<typeof contaSchema>;
 
@@ -132,29 +136,24 @@ export function ContaForm({
   }
 
   return (
-    <div className="max-w-md rounded-xl border border-border bg-surface p-6 shadow-sm">
+    <Card padding="lg" className="max-w-md">
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <FormField label="Nome" error={errors.nome?.message}>
-          <input type="text" className={inputClass} {...register("nome")} />
+          <Input type="text" {...register("nome")} />
         </FormField>
 
         <FormField label="Tipo" error={errors.tipo?.message}>
-          <select className={inputClass} {...register("tipo")}>
+          <Select {...register("tipo")}>
             {TIPOS_CONTA.map((tipo) => (
               <option key={tipo} value={tipo}>
                 {TIPO_CONTA_LABELS[tipo]}
               </option>
             ))}
-          </select>
+          </Select>
         </FormField>
 
         <FormField label="Saldo inicial" error={errors.saldo_inicial?.message}>
-          <input
-            type="number"
-            step="0.01"
-            className={inputClass}
-            {...register("saldo_inicial")}
-          />
+          <Input type="number" step="0.01" {...register("saldo_inicial")} />
         </FormField>
 
         <div className="mb-4 flex items-center gap-2">
@@ -177,26 +176,22 @@ export function ContaForm({
         )}
 
         <div className="flex gap-2">
-          <button
+          <Button
             type="button"
+            variant="secondary"
             onClick={() => router.push("/contas")}
-            className="w-full rounded-lg border border-border py-2 text-sm font-medium text-text-secondary hover:bg-neutral-soft"
           >
             Cancelar
-          </button>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full rounded-lg bg-brand py-2 text-sm font-medium text-brand-dark disabled:opacity-60"
-          >
+          </Button>
+          <Button type="submit" disabled={isSubmitting}>
             {isSubmitting
               ? "Salvando..."
               : mode === "editar"
                 ? "Salvar alterações"
                 : "Criar conta"}
-          </button>
+          </Button>
         </div>
       </form>
-    </div>
+    </Card>
   );
 }

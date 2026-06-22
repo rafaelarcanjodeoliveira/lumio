@@ -1,5 +1,6 @@
 import { endOfMonth, format, startOfMonth } from "date-fns";
 import { Topbar } from "@/components/layout/topbar";
+import { PageContainer } from "@/components/ui/page-container";
 import { ResumoCards } from "@/components/dashboard/resumo-cards";
 import { EvolucaoDiariaChart } from "@/components/dashboard/evolucao-diaria-chart";
 import { GastosPorCategoria } from "@/components/dashboard/gastos-por-categoria";
@@ -48,7 +49,7 @@ export default async function DashboardPage() {
         actionHref="/lancamentos/novo"
         actionLabel="Novo lançamento"
       />
-      <div className="flex-1 space-y-4 px-5 py-4">
+      <PageContainer className="space-y-4">
         <ResumoCards resumo={resumo} />
 
         <div className="grid grid-cols-1 gap-3 lg:grid-cols-[1.4fr_1fr]">
@@ -60,7 +61,7 @@ export default async function DashboardPage() {
           <GastosPorCategoria gastos={gastosPorCategoria} />
           <ProximosVencimentos vencimentos={proximosVencimentos} />
         </div>
-      </div>
+      </PageContainer>
     </>
   );
 }

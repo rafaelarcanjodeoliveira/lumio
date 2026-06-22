@@ -3,19 +3,21 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { addMonths, format, parseISO } from "date-fns";
+import { addMonths, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import {
   ChevronLeft,
   ChevronRight,
   CheckCircle2,
+  Inbox,
   Pencil,
   Trash2,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { formatCurrency } from "@/lib/format";
 import { inputClass } from "@/components/ui/form-field";
+import { EmptyState } from "@/components/ui/empty-state";
 import { ConfirmDeleteModal } from "@/components/lancamentos/confirm-delete-modal";
+import { TransactionCard } from "@/components/lancamentos/transaction-card";
 
 type Categoria = {
   id: string;
@@ -230,66 +232,31 @@ export function LancamentosList({
         <p className="mb-3 text-[12px] text-expense">{actionError}</p>
       )}
 
-      <div className="rounded-xl border border-border bg-surface">
+      <div className="rounded-xl border border-border bg-surface shadow-card">
         {lancamentosFiltrados.length === 0 ? (
-          <p className="px-4 py-6 text-center text-sm text-text-muted">
-            Nenhum lançamento encontrado para este período.
-          </p>
+          <EmptyState
+            icon={Inbox}
+            title="Nenhum lançamento encontrado"
+            description="Ajuste os filtros ou cadastre um novo lançamento para este período."
+          />
         ) : (
           lancamentosFiltrados.map((lancamento) => (
-            <div
+            <TransactionCard
               key={lancamento.id}
-              className="flex items-center justify-between gap-3 border-b border-border-soft px-4 py-3 last:border-b-0"
-            >
-              <div className="flex items-center gap-3">
-                <span
-                  className="h-2 w-2 shrink-0 rounded-full"
-                  style={{
-                    backgroundColor: lancamento.categorias?.cor ?? "#888780",
-                  }}
-                />
-                <div>
-                  <p className="text-[13px] text-text-primary">
-                    {lancamento.descricao}
-                  </p>
-                  <p className="text-[11px] text-text-muted">
-                    {lancamento.categorias?.nome ?? "Sem categoria"}
-                    {lancamento.total_parcelas
-                      ? ` · ${lancamento.parcela_atual}/${lancamento.total_parcelas}`
-                      : ""}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="text-right">
-                  <p
-                    className={`text-[13px] font-medium ${
-                      lancamento.tipo === "entrada"
-                        ? "text-income"
-                        : "text-expense"
-                    }`}
-                  >
-                    {lancamento.tipo === "entrada" ? "+ " : "− "}
-                    {formatCurrency(lancamento.valor)}
-                  </p>
-                  <p className="text-[11px] text-text-muted">
-                    {format(parseISO(lancamento.data), "dd/MM")} ·{" "}
-                    <span
-                      className={
-                        lancamento.status === "realizado"
-                          ? "text-income-text"
-                          : "text-brand-text"
-                      }
-                    >
-                      {lancamento.status === "realizado"
-                        ? "Realizado"
-                        : "Provisionado"}
-                    </span>
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-1">
+              descricao={lancamento.descricao}
+              categoriaNome={lancamento.categorias?.nome}
+              categoriaCor={lancamento.categorias?.cor}
+              data={lancamento.data}
+              tipo={lancamento.tipo}
+              status={lancamento.status}
+              valor={lancamento.valor}
+              parcelaInfo={
+                lancamento.total_parcelas
+                  ? `${lancamento.parcela_atual}/${lancamento.total_parcelas}`
+                  : undefined
+              }
+              actions={
+                <>
                   {lancamento.status === "provisionado" && (
                     <button
                       type="button"
@@ -315,9 +282,9 @@ export function LancamentosList({
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
-                </div>
-              </div>
-            </div>
+                </>
+              }
+            />
           ))
         )}
       </div>

@@ -1,4 +1,5 @@
 import { Topbar } from "@/components/layout/topbar";
+import { PageContainer } from "@/components/ui/page-container";
 import { CategoriasList } from "@/components/categorias/categorias-list";
 import { createClient } from "@/lib/supabase/server";
 
@@ -29,9 +30,9 @@ export default async function CategoriasPage() {
         actionHref="/categorias/novo"
         actionLabel="Nova categoria"
       />
-      <div className="flex-1 px-5 py-4">
+      <PageContainer>
         <CategoriasList initialCategorias={categoriasComVinculo} />
-      </div>
+      </PageContainer>
     </>
   );
 }

@@ -1,4 +1,5 @@
 import { Topbar } from "@/components/layout/topbar";
+import { PageContainer } from "@/components/ui/page-container";
 import { LancamentoForm } from "@/components/lancamentos/lancamento-form";
 import { createClient } from "@/lib/supabase/server";
 
@@ -20,9 +21,9 @@ export default async function NovoLancamentoPage() {
         title="Novo lançamento"
         subtitle="Registre uma entrada ou saída"
       />
-      <div className="flex-1 px-5 py-4">
+      <PageContainer>
         <LancamentoForm categorias={categorias ?? []} contas={contas ?? []} />
-      </div>
+      </PageContainer>
     </>
   );
 }

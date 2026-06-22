@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Wallet } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { formatCurrency } from "@/lib/format";
 import { ConfirmModal } from "@/components/ui/confirm-modal";
+import { EmptyState } from "@/components/ui/empty-state";
 import { TIPOS_CONTA } from "@/lib/validations/conta";
 
 type ContaRow = {
@@ -80,28 +81,32 @@ export function ContasList({ initialContas }: ContasListProps) {
         <p className="mb-3 text-[12px] text-expense">{actionError}</p>
       )}
 
-      <div className="rounded-xl border border-border bg-surface">
+      <div className="rounded-xl border border-border bg-surface shadow-card">
         {contas.length === 0 ? (
-          <p className="px-4 py-6 text-center text-sm text-text-muted">
-            Nenhuma conta cadastrada.
-          </p>
+          <EmptyState
+            icon={Wallet}
+            title="Nenhuma conta cadastrada"
+            description="Cadastre suas contas, carteiras e cartões para começar."
+          />
         ) : (
           contas.map((conta) => (
             <div
               key={conta.id}
               className="flex items-center justify-between gap-3 border-b border-border-soft px-4 py-3 last:border-b-0"
             >
-              <div>
-                <p className="text-[13px] text-text-primary">{conta.nome}</p>
-                <p className="text-[11px] text-text-muted">
+              <div className="min-w-0">
+                <p className="truncate text-[13px] text-text-primary">
+                  {conta.nome}
+                </p>
+                <p className="truncate text-[11px] text-text-muted">
                   {TIPO_LABELS[conta.tipo]} ·{" "}
                   {formatCurrency(conta.saldo_inicial)}
                 </p>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex shrink-0 items-center gap-2">
                 <span
-                  className={`rounded-full px-1.5 py-0.5 text-[10px] font-medium ${
+                  className={`whitespace-nowrap rounded-full px-1.5 py-0.5 text-[10px] font-medium ${
                     conta.ativo
                       ? "bg-income-soft text-income-text"
                       : "bg-neutral-soft text-text-muted"

@@ -6,7 +6,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { perfilSchema, type PerfilValues } from "@/lib/validations/perfil";
-import { FormField, inputClass } from "@/components/ui/form-field";
+import { FormField } from "@/components/ui/form-field";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 type PerfilFormProps = {
   userId: string;
@@ -62,19 +65,19 @@ export function PerfilForm({ userId, nome, email }: PerfilFormProps) {
   }
 
   return (
-    <div className="max-w-md rounded-xl border border-border bg-surface p-6 shadow-sm">
+    <Card padding="lg" className="max-w-md">
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <FormField label="Nome" error={errors.nome?.message}>
-          <input type="text" className={inputClass} {...register("nome")} />
+          <Input type="text" {...register("nome")} />
         </FormField>
 
         <FormField label="Email">
-          <input
+          <Input
             type="email"
             value={email}
             disabled
             readOnly
-            className={`${inputClass} cursor-not-allowed bg-neutral-soft text-text-muted`}
+            className="bg-neutral-soft text-text-muted"
           />
         </FormField>
 
@@ -85,13 +88,9 @@ export function PerfilForm({ userId, nome, email }: PerfilFormProps) {
           <p className="mb-4 text-[12px] text-income-text">{formSuccess}</p>
         )}
 
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full rounded-lg bg-brand py-2 text-sm font-medium text-brand-dark disabled:opacity-60"
-        >
+        <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Salvando..." : "Salvar alterações"}
-        </button>
+        </Button>
       </form>
 
       <div className="mt-6 border-t border-border-soft pt-5">
@@ -102,14 +101,14 @@ export function PerfilForm({ userId, nome, email }: PerfilFormProps) {
           Enviaremos um link por email para você definir uma nova senha.
         </p>
 
-        <button
+        <Button
           type="button"
+          variant="secondary"
           onClick={handleAlterarSenha}
           disabled={senhaStatus === "enviando"}
-          className="w-full rounded-lg border border-border py-2 text-sm font-medium text-text-secondary hover:bg-neutral-soft disabled:opacity-60"
         >
           {senhaStatus === "enviando" ? "Enviando..." : "Alterar senha"}
-        </button>
+        </Button>
 
         {senhaStatus === "enviado" && (
           <p className="mt-2 text-[12px] text-income-text">
@@ -122,6 +121,6 @@ export function PerfilForm({ userId, nome, email }: PerfilFormProps) {
           </p>
         )}
       </div>
-    </div>
+    </Card>
   );
 }

@@ -14,6 +14,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { Card } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/format";
 import type { GastoPorCategoria } from "@/lib/dashboard/calculations";
 
@@ -61,7 +62,7 @@ export function GastosCategoriaTab({
         </button>
       </div>
 
-      <div className="rounded-xl border border-border bg-surface p-4">
+      <Card>
         {gastos.length === 0 ? (
           <p className="text-sm text-text-muted">
             Nenhuma saída registrada neste mês.
@@ -87,7 +88,7 @@ export function GastosCategoriaTab({
                 <YAxis
                   type="category"
                   dataKey="nome"
-                  width={110}
+                  width={90}
                   tick={{ fontSize: 11, fill: "var(--color-text-secondary)" }}
                   axisLine={false}
                   tickLine={false}
@@ -108,40 +109,44 @@ export function GastosCategoriaTab({
               </BarChart>
             </ResponsiveContainer>
 
-            <table className="mt-4 w-full text-[13px]">
-              <thead>
-                <tr className="border-b border-border-soft text-left text-[11px] text-text-muted">
-                  <th className="py-2 font-medium">Categoria</th>
-                  <th className="py-2 text-right font-medium">Total</th>
-                  <th className="py-2 text-right font-medium">% do total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {gastos.map((gasto) => (
-                  <tr
-                    key={gasto.categoriaId}
-                    className="border-b border-border-soft last:border-b-0"
-                  >
-                    <td className="py-2 text-text-primary">
-                      <span
-                        className="mr-2 inline-block h-2 w-2 rounded-full"
-                        style={{ backgroundColor: gasto.cor }}
-                      />
-                      {gasto.nome}
-                    </td>
-                    <td className="py-2 text-right text-text-primary">
-                      {formatCurrency(gasto.valor)}
-                    </td>
-                    <td className="py-2 text-right text-text-muted">
-                      {gasto.percentual.toFixed(1)}%
-                    </td>
+            <div className="-mx-4 mt-4 overflow-x-auto px-4">
+              <table className="w-full min-w-[320px] text-[13px]">
+                <thead>
+                  <tr className="border-b border-border-soft text-left text-[11px] text-text-muted">
+                    <th className="py-2 font-medium">Categoria</th>
+                    <th className="py-2 text-right font-medium">Total</th>
+                    <th className="py-2 text-right font-medium">
+                      % do total
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {gastos.map((gasto) => (
+                    <tr
+                      key={gasto.categoriaId}
+                      className="border-b border-border-soft last:border-b-0"
+                    >
+                      <td className="py-2 text-text-primary">
+                        <span
+                          className="mr-2 inline-block h-2 w-2 rounded-full"
+                          style={{ backgroundColor: gasto.cor }}
+                        />
+                        {gasto.nome}
+                      </td>
+                      <td className="py-2 whitespace-nowrap text-right text-text-primary">
+                        {formatCurrency(gasto.valor)}
+                      </td>
+                      <td className="py-2 text-right text-text-muted">
+                        {gasto.percentual.toFixed(1)}%
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </>
         )}
-      </div>
+      </Card>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { format, parseISO } from "date-fns";
+import { Card } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/format";
 import type { LancamentoComCategoria } from "@/lib/dashboard/calculations";
 
@@ -8,7 +9,7 @@ type UltimosLancamentosProps = {
 
 export function UltimosLancamentos({ lancamentos }: UltimosLancamentosProps) {
   return (
-    <div className="rounded-xl border border-border bg-surface p-4">
+    <Card>
       <h2 className="mb-3 text-[12px] font-medium text-text-primary">
         Últimos lançamentos
       </h2>
@@ -22,25 +23,25 @@ export function UltimosLancamentos({ lancamentos }: UltimosLancamentosProps) {
               key={lancamento.id}
               className="flex items-center justify-between border-b border-border-soft py-2 last:border-b-0"
             >
-              <div className="flex items-center gap-2.5">
+              <div className="flex min-w-0 items-center gap-2.5">
                 <span
                   className="h-1.5 w-1.5 shrink-0 rounded-full"
                   style={{
                     backgroundColor: lancamento.categorias?.cor ?? "#888780",
                   }}
                 />
-                <div>
-                  <p className="text-[13px] text-text-primary">
+                <div className="min-w-0">
+                  <p className="truncate text-[13px] text-text-primary">
                     {lancamento.descricao}
                   </p>
-                  <p className="text-[11px] text-text-muted">
+                  <p className="truncate text-[11px] text-text-muted">
                     {lancamento.categorias?.nome ?? "Sem categoria"}
                   </p>
                 </div>
               </div>
-              <div className="text-right">
+              <div className="shrink-0 pl-2 text-right">
                 <p
-                  className={`text-[13px] font-medium ${
+                  className={`whitespace-nowrap text-[13px] font-medium ${
                     lancamento.tipo === "entrada"
                       ? "text-income"
                       : "text-expense"
@@ -49,7 +50,7 @@ export function UltimosLancamentos({ lancamentos }: UltimosLancamentosProps) {
                   {lancamento.tipo === "entrada" ? "+ " : "− "}
                   {formatCurrency(lancamento.valor)}
                 </p>
-                <p className="text-[11px] text-text-muted">
+                <p className="whitespace-nowrap text-[11px] text-text-muted">
                   {format(parseISO(lancamento.data), "dd/MM")}
                 </p>
               </div>
@@ -57,6 +58,6 @@ export function UltimosLancamentos({ lancamentos }: UltimosLancamentosProps) {
           ))}
         </div>
       )}
-    </div>
+    </Card>
   );
 }

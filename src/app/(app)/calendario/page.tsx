@@ -1,5 +1,6 @@
 import { endOfMonth, format, startOfMonth } from "date-fns";
 import { Topbar } from "@/components/layout/topbar";
+import { PageContainer } from "@/components/ui/page-container";
 import { CalendarioGrid } from "@/components/calendario/calendario-grid";
 import type { LancamentoComCategoria } from "@/lib/dashboard/calculations";
 import { createClient } from "@/lib/supabase/server";
@@ -37,14 +38,14 @@ export default async function CalendarioPage({
         title="Calendário"
         subtitle="Entradas, saídas e vencimentos dia a dia"
       />
-      <div className="flex-1 px-5 py-4">
+      <PageContainer>
         <CalendarioGrid
           key={`${mes}-${ano}`}
           mes={mes}
           ano={ano}
           lancamentos={lancamentos ?? []}
         />
-      </div>
+      </PageContainer>
     </>
   );
 }

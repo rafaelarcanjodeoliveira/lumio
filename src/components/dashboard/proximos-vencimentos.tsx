@@ -1,4 +1,5 @@
 import { format, parseISO } from "date-fns";
+import { Card } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/format";
 import type { ProximoVencimento } from "@/lib/dashboard/calculations";
 
@@ -10,7 +11,7 @@ export function ProximosVencimentos({
   vencimentos,
 }: ProximosVencimentosProps) {
   return (
-    <div className="rounded-xl border border-border bg-surface p-4">
+    <Card>
       <h2 className="mb-3 text-[12px] font-medium text-text-primary">
         Próximos vencimentos
       </h2>
@@ -26,11 +27,11 @@ export function ProximosVencimentos({
               key={vencimento.id}
               className="flex items-center justify-between border-b border-border-soft py-2 last:border-b-0"
             >
-              <div>
-                <p className="text-[13px] text-text-primary">
+              <div className="min-w-0">
+                <p className="truncate text-[13px] text-text-primary">
                   {vencimento.descricao}
                 </p>
-                <p className="text-[11px] text-text-muted">
+                <p className="truncate text-[11px] text-text-muted">
                   {format(parseISO(vencimento.data), "dd/MM")} ·{" "}
                   {vencimento.diasRestantes < 0
                     ? `${Math.abs(vencimento.diasRestantes)}d atrasado`
@@ -39,9 +40,9 @@ export function ProximosVencimentos({
                       : `${vencimento.diasRestantes}d`}
                 </p>
               </div>
-              <div className="text-right">
+              <div className="shrink-0 pl-2 text-right">
                 <p
-                  className={`text-[13px] font-medium ${
+                  className={`whitespace-nowrap text-[13px] font-medium ${
                     vencimento.tipo === "entrada"
                       ? "text-income"
                       : "text-expense"
@@ -64,6 +65,6 @@ export function ProximosVencimentos({
           ))}
         </div>
       )}
-    </div>
+    </Card>
   );
 }

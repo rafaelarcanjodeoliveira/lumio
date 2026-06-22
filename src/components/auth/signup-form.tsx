@@ -7,7 +7,10 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { signupSchema, type SignupValues } from "@/lib/validations/auth";
-import { FormField, inputClass } from "@/components/ui/form-field";
+import { FormField } from "@/components/ui/form-field";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export function SignupForm() {
   const router = useRouter();
@@ -51,7 +54,7 @@ export function SignupForm() {
   }
 
   return (
-    <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+    <Card padding="lg">
       <h1 className="mb-1 text-base font-medium text-text-primary">
         Criar conta
       </h1>
@@ -61,28 +64,17 @@ export function SignupForm() {
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <FormField label="Nome completo" error={errors.nome?.message}>
-          <input
-            type="text"
-            autoComplete="name"
-            className={inputClass}
-            {...register("nome")}
-          />
+          <Input type="text" autoComplete="name" {...register("nome")} />
         </FormField>
 
         <FormField label="Email" error={errors.email?.message}>
-          <input
-            type="email"
-            autoComplete="email"
-            className={inputClass}
-            {...register("email")}
-          />
+          <Input type="email" autoComplete="email" {...register("email")} />
         </FormField>
 
         <FormField label="Senha" error={errors.password?.message}>
-          <input
+          <Input
             type="password"
             autoComplete="new-password"
-            className={inputClass}
             {...register("password")}
           />
         </FormField>
@@ -91,10 +83,9 @@ export function SignupForm() {
           label="Confirmar senha"
           error={errors.confirmPassword?.message}
         >
-          <input
+          <Input
             type="password"
             autoComplete="new-password"
-            className={inputClass}
             {...register("confirmPassword")}
           />
         </FormField>
@@ -106,13 +97,9 @@ export function SignupForm() {
           <p className="mb-4 text-[12px] text-income-text">{infoMessage}</p>
         )}
 
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full rounded-lg bg-brand py-2 text-sm font-medium text-brand-dark disabled:opacity-60"
-        >
+        <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Criando conta..." : "Criar conta"}
-        </button>
+        </Button>
       </form>
 
       <p className="mt-5 text-center text-[13px] text-text-muted">
@@ -121,6 +108,6 @@ export function SignupForm() {
           Entrar
         </Link>
       </p>
-    </div>
+    </Card>
   );
 }

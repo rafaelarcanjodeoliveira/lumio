@@ -12,7 +12,12 @@ import {
   lancamentoSchema,
   type LancamentoValues,
 } from "@/lib/validations/lancamento";
-import { FormField, inputClass } from "@/components/ui/form-field";
+import { FormField } from "@/components/ui/form-field";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 
 type LancamentoFormInput = z.input<typeof lancamentoSchema>;
 
@@ -176,57 +181,51 @@ export function LancamentoForm({
   }
 
   return (
-    <div className="max-w-xl rounded-xl border border-border bg-surface p-6 shadow-sm">
+    <Card padding="lg" className="max-w-xl">
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        <div className="mb-4 grid grid-cols-2 gap-3">
+        <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
           <FormField label="Tipo" error={errors.tipo?.message}>
-            <select className={inputClass} {...register("tipo")}>
+            <Select {...register("tipo")}>
               <option value="entrada">Entrada</option>
               <option value="saida">Saída</option>
-            </select>
+            </Select>
           </FormField>
 
           <FormField label="Status" error={errors.status?.message}>
-            <select className={inputClass} {...register("status")}>
+            <Select {...register("status")}>
               <option value="realizado">Realizado</option>
               <option value="provisionado">Provisionado</option>
-            </select>
+            </Select>
           </FormField>
         </div>
 
-        <div className="mb-4 grid grid-cols-2 gap-3">
+        <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
           <FormField label="Data" error={errors.data?.message}>
-            <input type="date" className={inputClass} {...register("data")} />
+            <Input type="date" {...register("data")} />
           </FormField>
 
           <FormField label="Valor" error={errors.valor?.message}>
-            <input
+            <Input
               type="number"
               step="0.01"
               min="0"
               placeholder="0,00"
-              className={inputClass}
               {...register("valor")}
             />
           </FormField>
         </div>
 
         <FormField label="Descrição" error={errors.descricao?.message}>
-          <input
+          <Input
             type="text"
             placeholder="Ex: Aluguel, Mercado, Salário"
-            className={inputClass}
             {...register("descricao")}
           />
         </FormField>
 
-        <div className="mb-4 grid grid-cols-2 gap-3">
+        <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
           <FormField label="Categoria" error={errors.categoria_id?.message}>
-            <select
-              className={inputClass}
-              defaultValue=""
-              {...register("categoria_id")}
-            >
+            <Select defaultValue="" {...register("categoria_id")}>
               <option value="" disabled>
                 Selecione
               </option>
@@ -235,15 +234,11 @@ export function LancamentoForm({
                   {categoria.nome}
                 </option>
               ))}
-            </select>
+            </Select>
           </FormField>
 
           <FormField label="Conta" error={errors.conta_id?.message}>
-            <select
-              className={inputClass}
-              defaultValue=""
-              {...register("conta_id")}
-            >
+            <Select defaultValue="" {...register("conta_id")}>
               <option value="" disabled>
                 Selecione
               </option>
@@ -252,7 +247,7 @@ export function LancamentoForm({
                   {conta.nome}
                 </option>
               ))}
-            </select>
+            </Select>
           </FormField>
         </div>
 
@@ -260,22 +255,18 @@ export function LancamentoForm({
           label="Forma de pagamento"
           error={errors.forma_pagamento?.message}
         >
-          <select
-            className={inputClass}
-            defaultValue=""
-            {...register("forma_pagamento")}
-          >
+          <Select defaultValue="" {...register("forma_pagamento")}>
             <option value="">Não informado</option>
             {FORMAS_PAGAMENTO.map((forma) => (
               <option key={forma} value={forma}>
                 {FORMA_PAGAMENTO_LABELS[forma]}
               </option>
             ))}
-          </select>
+          </Select>
         </FormField>
 
         <FormField label="Observação" error={errors.observacao?.message}>
-          <textarea rows={3} className={inputClass} {...register("observacao")} />
+          <Textarea rows={3} {...register("observacao")} />
         </FormField>
 
         {mode === "novo" && (
@@ -300,12 +291,11 @@ export function LancamentoForm({
                 label="Total de parcelas"
                 error={errors.total_parcelas?.message}
               >
-                <input
+                <Input
                   type="number"
                   min="2"
                   step="1"
                   placeholder="Ex: 12"
-                  className={inputClass}
                   {...register("total_parcelas")}
                 />
               </FormField>
@@ -319,27 +309,23 @@ export function LancamentoForm({
 
         <div className={mode === "editar" ? "flex gap-2" : undefined}>
           {mode === "editar" && (
-            <button
+            <Button
               type="button"
+              variant="secondary"
               onClick={() => router.push(lancamentosHref)}
-              className="w-full rounded-lg border border-border py-2 text-sm font-medium text-text-secondary hover:bg-neutral-soft"
             >
               Cancelar
-            </button>
+            </Button>
           )}
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full rounded-lg bg-brand py-2 text-sm font-medium text-brand-dark disabled:opacity-60"
-          >
+          <Button type="submit" disabled={isSubmitting}>
             {isSubmitting
               ? "Salvando..."
               : mode === "editar"
                 ? "Salvar alterações"
                 : "Salvar lançamento"}
-          </button>
+          </Button>
         </div>
       </form>
-    </div>
+    </Card>
   );
 }

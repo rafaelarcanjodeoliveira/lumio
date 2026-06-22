@@ -10,6 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { Card } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/format";
 import type { RealizadoProvisionadoPonto } from "@/lib/relatorios/calculations";
 
@@ -21,12 +22,13 @@ export function RealizadoProvisionadoTab({
   pontos,
 }: RealizadoProvisionadoTabProps) {
   return (
-    <div className="rounded-xl border border-border bg-surface p-4">
+    <Card>
       <h2 className="mb-3 text-[12px] font-medium text-text-primary">
         Realizado vs. provisionado — últimos 6 meses
       </h2>
 
-      <ResponsiveContainer width="100%" height={280}>
+      <div className="h-[220px] sm:h-[280px]">
+        <ResponsiveContainer width="100%" height="100%">
         <BarChart data={pontos}>
           <CartesianGrid vertical={false} stroke="var(--color-border-soft)" />
           <XAxis
@@ -66,7 +68,8 @@ export function RealizadoProvisionadoTab({
             radius={[2, 2, 0, 0]}
           />
         </BarChart>
-      </ResponsiveContainer>
-    </div>
+        </ResponsiveContainer>
+      </div>
+    </Card>
   );
 }

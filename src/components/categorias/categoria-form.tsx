@@ -9,7 +9,11 @@ import {
   categoriaSchema,
   type CategoriaValues,
 } from "@/lib/validations/categoria";
-import { FormField, inputClass } from "@/components/ui/form-field";
+import { FormField } from "@/components/ui/form-field";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 
 type CategoriaFormProps = {
   mode?: "novo" | "editar";
@@ -81,18 +85,18 @@ export function CategoriaForm({
   }
 
   return (
-    <div className="max-w-md rounded-xl border border-border bg-surface p-6 shadow-sm">
+    <Card padding="lg" className="max-w-md">
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <FormField label="Nome" error={errors.nome?.message}>
-          <input type="text" className={inputClass} {...register("nome")} />
+          <Input type="text" {...register("nome")} />
         </FormField>
 
         <FormField label="Tipo" error={errors.tipo?.message}>
-          <select className={inputClass} {...register("tipo")}>
+          <Select {...register("tipo")}>
             <option value="entrada">Entrada</option>
             <option value="saida">Saída</option>
             <option value="ambos">Ambos</option>
-          </select>
+          </Select>
         </FormField>
 
         <FormField label="Cor" error={errors.cor?.message}>
@@ -123,26 +127,22 @@ export function CategoriaForm({
         )}
 
         <div className="flex gap-2">
-          <button
+          <Button
             type="button"
+            variant="secondary"
             onClick={() => router.push("/categorias")}
-            className="w-full rounded-lg border border-border py-2 text-sm font-medium text-text-secondary hover:bg-neutral-soft"
           >
             Cancelar
-          </button>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full rounded-lg bg-brand py-2 text-sm font-medium text-brand-dark disabled:opacity-60"
-          >
+          </Button>
+          <Button type="submit" disabled={isSubmitting}>
             {isSubmitting
               ? "Salvando..."
               : mode === "editar"
                 ? "Salvar alterações"
                 : "Criar categoria"}
-          </button>
+          </Button>
         </div>
       </form>
-    </div>
+    </Card>
   );
 }

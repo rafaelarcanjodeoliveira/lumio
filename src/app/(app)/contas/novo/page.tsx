@@ -1,4 +1,5 @@
 import { Topbar } from "@/components/layout/topbar";
+import { PageContainer } from "@/components/ui/page-container";
 import { ContaForm } from "@/components/contas/conta-form";
 
 export default function NovaContaPage() {
@@ -8,9 +9,9 @@ export default function NovaContaPage() {
         title="Nova conta"
         subtitle="Cadastre uma conta, carteira ou cartão"
       />
-      <div className="flex-1 px-5 py-4">
+      <PageContainer>
         <ContaForm />
-      </div>
+      </PageContainer>
     </>
   );
 }

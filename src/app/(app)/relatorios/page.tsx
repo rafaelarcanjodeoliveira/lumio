@@ -1,5 +1,6 @@
 import { endOfMonth, format, startOfMonth, subMonths } from "date-fns";
 import { Topbar } from "@/components/layout/topbar";
+import { PageContainer } from "@/components/ui/page-container";
 import { RelatoriosTabs } from "@/components/relatorios/relatorios-tabs";
 import {
   calcularGastosPorCategoria,
@@ -69,7 +70,7 @@ export default async function RelatoriosPage({
         title="Relatórios"
         subtitle="Análises e comparativos financeiros"
       />
-      <div className="flex-1 px-5 py-4">
+      <PageContainer>
         <RelatoriosTabs
           mes={mes}
           ano={ano}
@@ -77,7 +78,7 @@ export default async function RelatoriosPage({
           evolucaoMensal={evolucaoMensal}
           realizadoVsProvisionado={realizadoVsProvisionado}
         />
-      </div>
+      </PageContainer>
     </>
   );
 }

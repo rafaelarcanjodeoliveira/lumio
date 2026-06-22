@@ -12,6 +12,7 @@
   --text-faint: #888780;
 
   --brand: #ef9f27;
+  --brand-hover: #d98b18;
   --brand-dark: #412402;
   --brand-text: #633806;
   --brand-soft: #fff3dc;
@@ -43,6 +44,7 @@
   --color-text-faint: var(--text-faint);
 
   --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
   --color-brand-dark: var(--brand-dark);
   --color-brand-text: var(--brand-text);
   --color-brand-soft: var(--brand-soft);
@@ -63,9 +65,24 @@
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Cards usam rounded-xl em todo o app — elevar esse valor aqui muda
+     o radius de todos os cards existentes de uma vez, sem tocar em cada
+     arquivo (pedido do usuário: 14–16px de radius padrão para cards). */
+  --radius-xl: 16px;
+
+  /* Sombra suave para cards — tom quente alinhado à paleta, não preto puro. */
+  --shadow-card: 0 4px 16px rgba(43, 36, 28, 0.06);
+  --shadow-card-hover: 0 6px 20px rgba(43, 36, 28, 0.09);
 }
 
 body {
   background: var(--color-background);
   color: var(--color-text-primary);
+}
+
+@layer utilities {
+  .tap-target {
+    min-height: 44px;
+  }
 }

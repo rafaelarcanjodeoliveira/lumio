@@ -7,7 +7,7 @@ import {
   Wallet,
   type LucideIcon,
 } from "lucide-react";
-import { formatCurrency } from "@/lib/format";
+import { StatCard } from "@/components/dashboard/stat-card";
 import type { ResumoMensal } from "@/lib/dashboard/calculations";
 
 type ResumoCardsProps = {
@@ -64,22 +64,9 @@ export function ResumoCards({ resumo }: ResumoCardsProps) {
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-      {cards.map(({ label, valor, icon: Icon, valueClassName, highlight }) => (
-        <div
-          key={label}
-          className={`rounded-xl border bg-surface p-3.5 ${
-            highlight ? "border-brand" : "border-border"
-          }`}
-        >
-          <div className="mb-2 flex items-center gap-1.5 text-[11px] text-text-muted">
-            <Icon className="h-3.5 w-3.5" />
-            {label}
-          </div>
-          <p className={`text-xl font-medium ${valueClassName}`}>
-            {formatCurrency(valor)}
-          </p>
-        </div>
+    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+      {cards.map((card) => (
+        <StatCard key={card.label} {...card} />
       ))}
     </div>
   );

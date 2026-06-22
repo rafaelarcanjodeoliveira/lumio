@@ -40,7 +40,7 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="flex w-[200px] shrink-0 flex-col border-r border-border bg-surface">
+    <aside className="hidden w-[200px] shrink-0 flex-col border-r border-border bg-surface lg:flex">
       <div className="flex items-center gap-2.5 border-b border-border px-4 py-[18px]">
         <div className="flex h-7 w-7 items-center justify-center rounded-[7px] bg-brand">
           <svg viewBox="0 0 14 14" fill="none" className="h-3.5 w-3.5">

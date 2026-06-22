@@ -1,5 +1,6 @@
 import { endOfMonth, format, startOfMonth } from "date-fns";
 import { Topbar } from "@/components/layout/topbar";
+import { PageContainer } from "@/components/ui/page-container";
 import { LancamentosList } from "@/components/lancamentos/lancamentos-list";
 import { createClient } from "@/lib/supabase/server";
 
@@ -42,7 +43,7 @@ export default async function LancamentosPage({
         actionHref="/lancamentos/novo"
         actionLabel="Novo lançamento"
       />
-      <div className="flex-1 px-5 py-4">
+      <PageContainer>
         <LancamentosList
           key={`${mes}-${ano}`}
           initialLancamentos={lancamentos ?? []}
@@ -50,7 +51,7 @@ export default async function LancamentosPage({
           mes={mes}
           ano={ano}
         />
-      </div>
+      </PageContainer>
     </>
   );
 }

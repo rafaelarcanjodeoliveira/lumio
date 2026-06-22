@@ -9,6 +9,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { Card } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/format";
 import type { EvolucaoDiariaPonto } from "@/lib/dashboard/calculations";
 
@@ -18,18 +19,19 @@ type EvolucaoDiariaChartProps = {
 
 export function EvolucaoDiariaChart({ pontos }: EvolucaoDiariaChartProps) {
   return (
-    <div className="rounded-xl border border-border bg-surface p-4">
-      <div className="mb-3 flex items-center justify-between">
+    <Card>
+      <div className="mb-3 flex items-center justify-between gap-2">
         <h2 className="text-[12px] font-medium text-text-primary">
           Evolução diária
         </h2>
-        <span className="text-[11px] text-text-muted">
+        <span className="whitespace-nowrap text-[11px] text-text-muted">
           realizado · provisionado
         </span>
       </div>
 
-      <ResponsiveContainer width="100%" height={220}>
-        <BarChart data={pontos} barCategoryGap={2}>
+      <div className="h-[180px] sm:h-[220px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={pontos} barCategoryGap={2}>
           <CartesianGrid vertical={false} stroke="var(--color-border-soft)" />
           <XAxis
             dataKey="dia"
@@ -66,7 +68,8 @@ export function EvolucaoDiariaChart({ pontos }: EvolucaoDiariaChartProps) {
             radius={[2, 2, 0, 0]}
           />
         </BarChart>
-      </ResponsiveContainer>
-    </div>
+        </ResponsiveContainer>
+      </div>
+    </Card>
   );
 }

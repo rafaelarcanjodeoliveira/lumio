@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { Topbar } from "@/components/layout/topbar";
+import { PageContainer } from "@/components/ui/page-container";
 import { CategoriaForm } from "@/components/categorias/categoria-form";
 import { createClient } from "@/lib/supabase/server";
 
@@ -26,7 +27,7 @@ export default async function EditarCategoriaPage({
   return (
     <>
       <Topbar title="Editar categoria" subtitle={categoria.nome} />
-      <div className="flex-1 px-5 py-4">
+      <PageContainer>
         <CategoriaForm
           mode="editar"
           categoriaId={categoria.id}
@@ -37,7 +38,7 @@ export default async function EditarCategoriaPage({
             ativo: categoria.ativo,
           }}
         />
-      </div>
+      </PageContainer>
     </>
   );
 }

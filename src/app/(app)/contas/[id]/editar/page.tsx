@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { Topbar } from "@/components/layout/topbar";
+import { PageContainer } from "@/components/ui/page-container";
 import { ContaForm } from "@/components/contas/conta-form";
 import { createClient } from "@/lib/supabase/server";
 
@@ -26,7 +27,7 @@ export default async function EditarContaPage({
   return (
     <>
       <Topbar title="Editar conta" subtitle={conta.nome} />
-      <div className="flex-1 px-5 py-4">
+      <PageContainer>
         <ContaForm
           mode="editar"
           contaId={conta.id}
@@ -37,7 +38,7 @@ export default async function EditarContaPage({
             ativo: conta.ativo,
           }}
         />
-      </div>
+      </PageContainer>
     </>
   );
 }
