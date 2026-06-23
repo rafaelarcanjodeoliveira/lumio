@@ -1,14 +1,14 @@
 import { endOfMonth, format, startOfMonth } from "date-fns";
-import { Topbar } from "@/components/layout/topbar";
+import { redirect } from "next/navigation";
+import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { PageContainer } from "@/components/ui/page-container";
-import { ResumoCards } from "@/components/dashboard/resumo-cards";
-import { EvolucaoDiariaChart } from "@/components/dashboard/evolucao-diaria-chart";
+import { HeroCard } from "@/components/dashboard/hero-card";
+import { MiniCards } from "@/components/dashboard/mini-cards";
 import { GastosPorCategoria } from "@/components/dashboard/gastos-por-categoria";
 import { ProximosVencimentos } from "@/components/dashboard/proximos-vencimentos";
 import { UltimosLancamentos } from "@/components/dashboard/ultimos-lancamentos";
 import {
   calcularResumoMensal,
-  calcularEvolucaoDiaria,
   calcularGastosPorCategoria,
   calcularProximosVencimentos,
   selecionarUltimosLancamentos,
@@ -16,51 +16,76 @@ import {
 } from "@/lib/dashboard/calculations";
 import { createClient } from "@/lib/supabase/server";
 
-export default async function DashboardPage() {
+type DashboardPageProps = {
+  searchParams: Promise<{ mes?: string; ano?: string }>;
+};
+
+export default async function DashboardPage({
+  searchParams,
+}: DashboardPageProps) {
+  const params = await searchParams;
   const hoje = new Date();
-  const inicio = format(startOfMonth(hoje), "yyyy-MM-dd");
-  const fim = format(endOfMonth(hoje), "yyyy-MM-dd");
+  const mes = Number(params.mes) || hoje.getMonth() + 1;
+  const ano = Number(params.ano) || hoje.getFullYear();
   const hojeISO = format(hoje, "yyyy-MM-dd");
 
+  const referencia = new Date(ano, mes - 1, 1);
+  const inicio = format(startOfMonth(referencia), "yyyy-MM-dd");
+  const fim = format(endOfMonth(referencia), "yyyy-MM-dd");
+
   const supabase = await createClient();
-  const { data: lancamentos } = await supabase
-    .from("lancamentos")
-    .select(
-      "id, tipo, status, descricao, valor, data, categoria_id, categorias(nome, cor)",
-    )
-    .gte("data", inicio)
-    .lte("data", fim)
-    .order("data", { ascending: false })
-    .returns<LancamentoComCategoria[]>();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const [{ data: profile }, { data: lancamentos }] = await Promise.all([
+    supabase.from("profiles").select("nome").eq("id", user.id).single(),
+    supabase
+      .from("lancamentos")
+      .select(
+        "id, tipo, status, descricao, valor, data, categoria_id, categorias(nome, cor)",
+      )
+      .gte("data", inicio)
+      .lte("data", fim)
+      .order("data", { ascending: false })
+      .returns<LancamentoComCategoria[]>(),
+  ]);
 
   const registros = lancamentos ?? [];
 
   const resumo = calcularResumoMensal(registros, hojeISO);
-  const evolucaoDiaria = calcularEvolucaoDiaria(registros, hoje);
   const gastosPorCategoria = calcularGastosPorCategoria(registros);
   const proximosVencimentos = calcularProximosVencimentos(registros, hoje);
-  const ultimosLancamentos = selecionarUltimosLancamentos(registros);
+  const ultimosLancamentos = selecionarUltimosLancamentos(registros, 3);
+
+  const primeiroNome = (profile?.nome ?? "").trim().split(" ")[0] || "você";
 
   return (
     <>
-      <Topbar
-        title="Dashboard"
-        subtitle="Clareza para seu mês financeiro"
-        actionHref="/lancamentos/novo"
-        actionLabel="Novo lançamento"
-      />
-      <PageContainer className="space-y-5 sm:space-y-6">
-        <ResumoCards resumo={resumo} />
+      <DashboardHeader nome={primeiroNome} mes={mes} ano={ano} />
+      <PageContainer key={`${mes}-${ano}`} className="space-y-4">
+        <HeroCard
+          saldoAtual={resumo.saldoAtual}
+          entradasRealizadas={resumo.entradasRealizadas}
+          saidasRealizadas={resumo.saidasRealizadas}
+          saldoPrevisto={resumo.saldoPrevisto}
+        />
 
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1.4fr_1fr]">
-          <EvolucaoDiariaChart pontos={evolucaoDiaria} />
-          <UltimosLancamentos lancamentos={ultimosLancamentos} />
-        </div>
+        <MiniCards
+          provisionadoLiquido={resumo.provisionadoLiquido}
+          disponivelHoje={resumo.disponivelHoje}
+        />
 
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <GastosPorCategoria gastos={gastosPorCategoria} />
-          <ProximosVencimentos vencimentos={proximosVencimentos} />
-        </div>
+        <ProximosVencimentos vencimentos={proximosVencimentos} />
+
+        <GastosPorCategoria gastos={gastosPorCategoria} />
+
+        <UltimosLancamentos lancamentos={ultimosLancamentos} />
       </PageContainer>
     </>
   );

@@ -50,7 +50,7 @@ export function MobileNavigation() {
 
   return (
     <>
-      <nav className="fixed inset-x-0 bottom-0 z-40 flex border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] lg:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-40 flex border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] md:hidden">
         {BOTTOM_ITEMS.map(({ href, label, icon: Icon }) => {
           const active = pathname === href;
           return (
@@ -79,7 +79,7 @@ export function MobileNavigation() {
       </nav>
 
       {menuAberto && (
-        <div className="fixed inset-0 z-50 flex items-end bg-black/40 lg:hidden">
+        <div className="fixed inset-0 z-50 flex items-end bg-black/40 md:hidden">
           <div className="w-full rounded-t-2xl bg-surface p-4 pb-[calc(env(safe-area-inset-bottom)+16px)] shadow-card">
             <div className="mb-3 flex items-center justify-between">
               <span className="text-sm font-medium text-text-primary">

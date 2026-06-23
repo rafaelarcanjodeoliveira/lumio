@@ -1,4 +1,4 @@
-import { differenceInCalendarDays, getDaysInMonth, parseISO } from "date-fns";
+import { differenceInCalendarDays, parseISO } from "date-fns";
 
 export type LancamentoComCategoria = {
   id: string;
@@ -76,38 +76,6 @@ export function calcularResumoMensal(
   };
 }
 
-export type EvolucaoDiariaPonto = {
-  dia: number;
-  realizado: number;
-  provisionado: number;
-};
-
-export function calcularEvolucaoDiaria(
-  lancamentos: LancamentoComCategoria[],
-  referencia: Date,
-): EvolucaoDiariaPonto[] {
-  const totalDias = getDaysInMonth(referencia);
-  const pontos: EvolucaoDiariaPonto[] = Array.from(
-    { length: totalDias },
-    (_, index) => ({ dia: index + 1, realizado: 0, provisionado: 0 }),
-  );
-
-  for (const lancamento of lancamentos) {
-    const dia = Number(lancamento.data.slice(8, 10));
-    const ponto = pontos[dia - 1];
-    if (!ponto) continue;
-
-    const sinal = lancamento.tipo === "entrada" ? 1 : -1;
-    if (lancamento.status === "realizado") {
-      ponto.realizado += sinal * lancamento.valor;
-    } else {
-      ponto.provisionado += sinal * lancamento.valor;
-    }
-  }
-
-  return pontos;
-}
-
 export type GastoPorCategoria = {
   categoriaId: string;
   nome: string;
@@ -156,18 +124,22 @@ export type ProximoVencimento = LancamentoComCategoria & {
   urgente: boolean;
 };
 
+/** Só saídas provisionadas — vencimentos de entradas não entram aqui. */
 export function calcularProximosVencimentos(
   lancamentos: LancamentoComCategoria[],
   hoje: Date,
 ): ProximoVencimento[] {
   return lancamentos
-    .filter((lancamento) => lancamento.status === "provisionado")
+    .filter(
+      (lancamento) =>
+        lancamento.status === "provisionado" && lancamento.tipo === "saida",
+    )
     .map((lancamento) => {
       const diasRestantes = differenceInCalendarDays(
         parseISO(lancamento.data),
         hoje,
       );
-      return { ...lancamento, diasRestantes, urgente: diasRestantes <= 3 };
+      return { ...lancamento, diasRestantes, urgente: diasRestantes <= 0 };
     })
     .sort((a, b) => a.diasRestantes - b.diasRestantes);
 }

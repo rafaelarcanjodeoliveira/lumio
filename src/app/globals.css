@@ -34,6 +34,13 @@
   /* Tom de dado para "provisionado" em gráficos — deliberadamente mais
      discreto que --brand, que fica reservado para ações/estados ativos. */
   --chart-provisionado: #e0b374;
+
+  /* Hero card do dashboard — fundo quase preto; income/expense normais
+     ficam ilegíveis nesse contraste, por isso variantes claras dedicadas. */
+  --hero: #2c1800;
+  --hero-accent: #fac775;
+  --hero-green: #97c459;
+  --hero-red: #f5a090;
 }
 
 @theme inline {
@@ -68,6 +75,11 @@
   --color-neutral-text: var(--neutral-text);
 
   --color-chart-provisionado: var(--chart-provisionado);
+
+  --color-hero: var(--hero);
+  --color-hero-accent: var(--hero-accent);
+  --color-hero-green: var(--hero-green);
+  --color-hero-red: var(--hero-red);
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);

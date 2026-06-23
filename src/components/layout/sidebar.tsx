@@ -42,7 +42,7 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="hidden w-[224px] shrink-0 flex-col border-r border-border bg-surface lg:flex">
+    <aside className="hidden w-[224px] shrink-0 flex-col border-r border-border bg-surface md:flex">
       <div className="flex items-center gap-2.5 border-b border-border px-5 py-5">
         <div className="flex h-7 w-7 items-center justify-center rounded-[9px] bg-brand">
           <svg viewBox="0 0 14 14" fill="none" className="h-3.5 w-3.5">

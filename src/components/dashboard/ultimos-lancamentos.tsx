@@ -1,5 +1,6 @@
 import { format, parseISO } from "date-fns";
 import { Card } from "@/components/ui/card";
+import { SectionHeader } from "@/components/dashboard/section-header";
 import { formatCurrency } from "@/lib/format";
 import type { LancamentoComCategoria } from "@/lib/dashboard/calculations";
 
@@ -9,11 +10,13 @@ type UltimosLancamentosProps = {
 
 export function UltimosLancamentos({ lancamentos }: UltimosLancamentosProps) {
   return (
-    <Card>
-      <h2 className="mb-3 text-[12px] font-medium text-text-primary">
-        Últimos lançamentos
-      </h2>
-
+    <div>
+      <SectionHeader
+        title="Últimos lançamentos"
+        linkLabel="Ver todos"
+        linkHref="/lancamentos"
+      />
+      <Card>
       {lancamentos.length === 0 ? (
         <p className="text-sm text-text-muted">Nenhum lançamento neste mês.</p>
       ) : (
@@ -58,6 +61,7 @@ export function UltimosLancamentos({ lancamentos }: UltimosLancamentosProps) {
           ))}
         </div>
       )}
-    </Card>
+      </Card>
+    </div>
   );
 }
