@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   List,
+  NotebookTabs,
   Calendar,
   Tag,
   Wallet,
@@ -19,6 +20,7 @@ import { createClient } from "@/lib/supabase/client";
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/lancamentos", label: "Lançamentos", icon: List },
+  { href: "/diario", label: "Diário", icon: NotebookTabs },
   { href: "/calendario", label: "Calendário", icon: Calendar },
   { href: "/categorias", label: "Categorias", icon: Tag },
   { href: "/contas", label: "Contas", icon: Wallet },

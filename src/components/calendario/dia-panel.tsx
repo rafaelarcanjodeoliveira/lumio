@@ -3,11 +3,14 @@
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { X } from "lucide-react";
-import type { DiaCalendario } from "@/lib/calendario/calculations";
+import type { LancamentoComCategoria } from "@/lib/dashboard/calculations";
 import { TransactionCard } from "@/components/lancamentos/transaction-card";
 
 type DiaPanelProps = {
-  dia: DiaCalendario;
+  dia: {
+    data: Date;
+    lancamentos: LancamentoComCategoria[];
+  };
   onClose: () => void;
 };
 
@@ -42,16 +45,24 @@ export function DiaPanel({ dia, onClose }: DiaPanelProps) {
           ) : (
             <div className="flex flex-col">
               {dia.lancamentos.map((lancamento) => (
-                <TransactionCard
+                <div
                   key={lancamento.id}
-                  descricao={lancamento.descricao}
-                  categoriaNome={lancamento.categorias?.nome}
-                  categoriaCor={lancamento.categorias?.cor}
-                  data={lancamento.data}
-                  tipo={lancamento.tipo}
-                  status={lancamento.status}
-                  valor={lancamento.valor}
-                />
+                  className={
+                    lancamento.status === "provisionado"
+                      ? "opacity-60"
+                      : undefined
+                  }
+                >
+                  <TransactionCard
+                    descricao={lancamento.descricao}
+                    categoriaNome={lancamento.categorias?.nome}
+                    categoriaCor={lancamento.categorias?.cor}
+                    data={lancamento.data}
+                    tipo={lancamento.tipo}
+                    status={lancamento.status}
+                    valor={lancamento.valor}
+                  />
+                </div>
               ))}
             </div>
           )}

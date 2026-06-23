@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   List,
+  NotebookTabs,
   Calendar,
   BarChart3,
   MoreHorizontal,
@@ -25,6 +26,7 @@ const BOTTOM_ITEMS = [
 ];
 
 const MORE_ITEMS = [
+  { href: "/diario", label: "Diário", icon: NotebookTabs },
   { href: "/categorias", label: "Categorias", icon: Tag },
   { href: "/contas", label: "Contas", icon: Wallet },
   { href: "/configuracoes", label: "Configurações", icon: Settings },
