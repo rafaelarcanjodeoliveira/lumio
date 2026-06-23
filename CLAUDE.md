@@ -75,11 +75,22 @@ up). Tables: `profiles` (mirrors `auth.users`, auto-created via the `handle_new_
 Supabase query (client or server) is automatically scoped to the current user — no need to add
 `.eq("user_id", ...)` filters manually.
 
-`lancamentos.grupo_recorrencia_id` links rows generated together from one recurring/installment entry
-(`parcela_atual` / `total_parcelas` track position). When creating installments client-side, generate
-one `crypto.randomUUID()` and reuse it across all generated rows in a single bulk `insert()`; split
-`valor` using integer-cent math and put the rounding remainder on the last installment so the parts sum
-exactly to the entered total (see `components/lancamentos/lancamento-form.tsx`).
+`lancamentos.grupo_recorrencia_id` links rows generated together from one repeat entry (`parcela_atual`
+/ `total_parcelas` track position), via one of two modes chosen with the `tipo_repeticao` radio in
+`LancamentoForm` (only shown in `mode="novo"`, behind the "Repetir lançamento" checkbox — the
+`recorrente` boolean column itself just means "part of a generated group", true for both modes):
+
+- `tipo_repeticao: "recorrente"` (salário, aluguel, internet) — `meses_recorrencia` rows, all with the
+  *same* `valor`, descrição unchanged (no `"(X/N)"` suffix).
+- `tipo_repeticao: "parcelado"` (compra dividida) — `total_parcelas` rows, descrição suffixed
+  `"(X/N)"`. `divisao_valor` picks how the entered `valor` maps to each row: `"dividir"` splits it with
+  integer-cent math and puts the rounding remainder on the last row (so the parts sum exactly to what
+  was typed — this is the original/only behavior before the recorrente/parcelado split existed);
+  `"repetir"` uses the entered value as-is for every row instead (the entered value *is* the
+  per-parcela amount, so the real total ends up `valor × N`).
+
+Both modes generate one `crypto.randomUUID()` and reuse it across every generated row in a single bulk
+`insert()` (see `components/lancamentos/lancamento-form.tsx`).
 
 Gotcha: without generated Supabase types (no `supabase gen types` wired up), `.select("*, categorias(nome, cor)")`-style FK joins get inferred as arrays (`{nome,cor}[]`) because the client can't know the
 relationship is many-to-one. Use `.returns<T>()` on the query to override the inferred type (see

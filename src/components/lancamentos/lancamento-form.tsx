@@ -79,12 +79,14 @@ export function LancamentoForm({
       status: "realizado",
       data: format(new Date(), "yyyy-MM-dd"),
       recorrente: false,
+      divisao_valor: "dividir",
       ...defaultValues,
     },
   });
 
   const tipoSelecionado = watch("tipo");
   const recorrente = watch("recorrente");
+  const tipoRepeticao = watch("tipo_repeticao");
 
   const categoriasDisponiveis = categorias.filter(
     (categoria) =>
@@ -134,7 +136,6 @@ export function LancamentoForm({
       user_id: user.id,
       tipo: values.tipo,
       status: values.status,
-      descricao: values.descricao,
       categoria_id: values.categoria_id,
       conta_id: values.conta_id,
       forma_pagamento: values.forma_pagamento ?? null,
@@ -144,29 +145,71 @@ export function LancamentoForm({
 
     let records: Record<string, unknown>[];
 
-    if (values.recorrente && values.total_parcelas) {
-      const totalParcelas = values.total_parcelas;
+    if (values.recorrente && values.tipo_repeticao === "recorrente" && values.meses_recorrencia) {
+      // Recorrente: N lançamentos com o MESMO valor, sem sufixo na descrição.
+      const totalParcelas = values.meses_recorrencia;
       const grupoRecorrenciaId = crypto.randomUUID();
-      const totalCentavos = Math.round(values.valor * 100);
-      const baseCentavos = Math.floor(totalCentavos / totalParcelas);
-      const restoCentavos = totalCentavos - baseCentavos * totalParcelas;
       const dataBase = parseISO(values.data);
 
-      records = Array.from({ length: totalParcelas }, (_, index) => {
-        const isUltima = index === totalParcelas - 1;
-        const valorCentavos = baseCentavos + (isUltima ? restoCentavos : 0);
+      records = Array.from({ length: totalParcelas }, (_, index) => ({
+        ...baseRecord,
+        descricao: values.descricao,
+        valor: values.valor,
+        data: format(addMonths(dataBase, index), "yyyy-MM-dd"),
+        parcela_atual: index + 1,
+        total_parcelas: totalParcelas,
+        grupo_recorrencia_id: grupoRecorrenciaId,
+      }));
+    } else if (
+      values.recorrente &&
+      values.tipo_repeticao === "parcelado" &&
+      values.total_parcelas
+    ) {
+      // Parcelado: cada parcela leva o sufixo "(X/N)" na descrição. O valor
+      // por parcela depende da escolha do usuário — dividir o total (com
+      // matemática em centavos, resto na última parcela) ou repetir o
+      // valor informado em cada parcela (total = valor × N).
+      const totalParcelas = values.total_parcelas;
+      const grupoRecorrenciaId = crypto.randomUUID();
+      const dataBase = parseISO(values.data);
 
-        return {
-          ...baseRecord,
-          valor: valorCentavos / 100,
-          data: format(addMonths(dataBase, index), "yyyy-MM-dd"),
-          parcela_atual: index + 1,
-          total_parcelas: totalParcelas,
-          grupo_recorrencia_id: grupoRecorrenciaId,
-        };
-      });
+      let valoresCentavos: number[];
+
+      if (values.divisao_valor === "repetir") {
+        const valorCentavos = Math.round(values.valor * 100);
+        valoresCentavos = Array.from(
+          { length: totalParcelas },
+          () => valorCentavos,
+        );
+      } else {
+        const totalCentavos = Math.round(values.valor * 100);
+        const baseCentavos = Math.floor(totalCentavos / totalParcelas);
+        const restoCentavos = totalCentavos - baseCentavos * totalParcelas;
+        valoresCentavos = Array.from({ length: totalParcelas }, (_, index) =>
+          index === totalParcelas - 1
+            ? baseCentavos + restoCentavos
+            : baseCentavos,
+        );
+      }
+
+      records = valoresCentavos.map((valorCentavos, index) => ({
+        ...baseRecord,
+        descricao: `${values.descricao} (${index + 1}/${totalParcelas})`,
+        valor: valorCentavos / 100,
+        data: format(addMonths(dataBase, index), "yyyy-MM-dd"),
+        parcela_atual: index + 1,
+        total_parcelas: totalParcelas,
+        grupo_recorrencia_id: grupoRecorrenciaId,
+      }));
     } else {
-      records = [{ ...baseRecord, valor: values.valor, data: values.data }];
+      records = [
+        {
+          ...baseRecord,
+          descricao: values.descricao,
+          valor: values.valor,
+          data: values.data,
+        },
+      ];
     }
 
     const { error } = await supabase.from("lancamentos").insert(records);
@@ -282,23 +325,96 @@ export function LancamentoForm({
                 htmlFor="recorrente"
                 className="text-[13px] font-medium text-text-secondary"
               >
-                Lançamento parcelado / recorrente
+                Repetir lançamento
               </label>
             </div>
 
             {recorrente && (
-              <FormField
-                label="Total de parcelas"
-                error={errors.total_parcelas?.message}
-              >
-                <Input
-                  type="number"
-                  min="2"
-                  step="1"
-                  placeholder="Ex: 12"
-                  {...register("total_parcelas")}
-                />
-              </FormField>
+              <>
+                <FormField
+                  label="Tipo de repetição"
+                  error={errors.tipo_repeticao?.message}
+                >
+                  <div className="flex gap-4">
+                    <label className="flex items-center gap-2 text-[13px] text-text-secondary">
+                      <input
+                        type="radio"
+                        value="recorrente"
+                        className="h-4 w-4 border-border text-brand focus:ring-brand"
+                        {...register("tipo_repeticao")}
+                      />
+                      Recorrente
+                    </label>
+                    <label className="flex items-center gap-2 text-[13px] text-text-secondary">
+                      <input
+                        type="radio"
+                        value="parcelado"
+                        className="h-4 w-4 border-border text-brand focus:ring-brand"
+                        {...register("tipo_repeticao")}
+                      />
+                      Parcelado
+                    </label>
+                  </div>
+                </FormField>
+
+                {tipoRepeticao === "recorrente" && (
+                  <FormField
+                    label="Por quantos meses?"
+                    error={errors.meses_recorrencia?.message}
+                  >
+                    <Input
+                      type="number"
+                      min="1"
+                      step="1"
+                      placeholder="Ex: 12"
+                      {...register("meses_recorrencia")}
+                    />
+                  </FormField>
+                )}
+
+                {tipoRepeticao === "parcelado" && (
+                  <>
+                    <FormField
+                      label="Número de parcelas"
+                      error={errors.total_parcelas?.message}
+                    >
+                      <Input
+                        type="number"
+                        min="2"
+                        step="1"
+                        placeholder="Ex: 3"
+                        {...register("total_parcelas")}
+                      />
+                    </FormField>
+
+                    <FormField
+                      label="Valor por parcela"
+                      error={errors.divisao_valor?.message}
+                    >
+                      <div className="flex flex-col gap-2">
+                        <label className="flex items-center gap-2 text-[13px] text-text-secondary">
+                          <input
+                            type="radio"
+                            value="dividir"
+                            className="h-4 w-4 border-border text-brand focus:ring-brand"
+                            {...register("divisao_valor")}
+                          />
+                          Dividir valor total (valor ÷ parcelas)
+                        </label>
+                        <label className="flex items-center gap-2 text-[13px] text-text-secondary">
+                          <input
+                            type="radio"
+                            value="repetir"
+                            className="h-4 w-4 border-border text-brand focus:ring-brand"
+                            {...register("divisao_valor")}
+                          />
+                          Mesmo valor em cada parcela (valor × parcelas)
+                        </label>
+                      </div>
+                    </FormField>
+                  </>
+                )}
+              </>
             )}
           </>
         )}
